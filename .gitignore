@@ -40,4 +40,4 @@ vignettes/*.pdf
 
 # Don't include data/results folders
 data/
-workflow_results/
+cluster_workflow_results/
