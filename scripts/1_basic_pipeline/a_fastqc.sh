@@ -7,10 +7,8 @@ fastq_srr="$(head -"$1" data/files.txt | tail -1)"
 echo $fastq_srr
 
 # so, this is the location of the .fastq file we need
-fastq_location="data/$fastq_srr.fastq"
+fastq_location="data/$fastq_srr.fastq.gz"
 echo $fastq_location
-
-mkdir results/1_basic_pipeline/a_fastqc
 
 # run fastqc on the specified fastq file
 fastqc $fastq_location -o results/1_basic_pipeline/a_fastqc
