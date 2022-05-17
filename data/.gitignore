@@ -1,5 +1,1 @@
-*
-*/
-!.gitignore
-!get_data.sh
-!README.md
+*.fastq
