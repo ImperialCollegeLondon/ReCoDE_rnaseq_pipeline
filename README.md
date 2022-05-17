@@ -2,7 +2,7 @@
 
 The development of next generation sequencing technologies has facilitated a systems-level approach to biological and biomedical research. In particular, RNA sequencing (RNA-seq) has become a ubiquitous method for gene expression profiling. However, the colossal datasets produced by this method pose a new challenge for life science researchers, who commonly have little statistical or computational training. The processing of sequencing data commonly requires the development of custom workflows that can run in parallel on university computing clusters. Furthermore, the quality control and statistical analysis of these data requires specialist knowledge and purpose-built software packages.
 
-In this exemplar, we will demonstrate the development of a pipeline for processing RNA-seq datasets on the Imperial College Research Computing Service (RCS) and basic statistical analysis of the normalised data. This will involve:
+In this exemplar, we will demonstrate the development of a pipeline for processing RNA-seq datasets on the Imperial College Research Computing Service (RCS) and basic statistical analysis of the normalised data. This will involve: 
 
 - Quality control and trimming of raw RNA-seq reads
 - Alignment of reads to the human reference genome

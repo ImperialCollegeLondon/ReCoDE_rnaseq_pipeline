@@ -37,7 +37,3 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
-
-# Don't include data/results folders
-data/
-cluster_workflow_results/
