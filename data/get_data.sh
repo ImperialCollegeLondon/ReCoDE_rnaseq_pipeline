@@ -20,6 +20,6 @@ for srr in ${SAMPLE_SRR[@]}; do
     echo $srr >> data/files.txt
 
     # get the sample's file
-    fastq-dump "$srr"
+    fastq-dump --gzip "$srr"
 
 done
