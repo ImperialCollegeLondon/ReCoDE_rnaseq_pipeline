@@ -12,10 +12,18 @@ readarray -t SAMPLE_SRR < data/files.txt
 
 ########################################## run the pipeline steps
 
-# make the results directory if needed
-if [ ! -e  results/1_basic_pipeline/a_fastqc ]; then
-    mkdir results/1_basic_pipeline/a_fastqc
-fi
+# optional: remove results from previous run
+# rm -rf results/1_basic_pipeline
+# mkdir results/1_basic_pipeline
+
+# function creates a results folder if it doesn't already exist
+create_folder () {
+    if [ ! -e  results/1_basic_pipeline/$1 ]; then
+        mkdir results/1_basic_pipeline/$1
+    fi
+}
+
+create_folder "a_fastqc"
 
 # for each sample
 for s in "${SAMPLE_SRR[@]}"; do
