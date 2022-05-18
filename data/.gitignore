@@ -1,2 +1,5 @@
-*.gz
+*
 /*
+!.gitignore
+!get_data.sh
+!README.md
