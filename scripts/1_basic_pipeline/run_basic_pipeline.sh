@@ -30,60 +30,64 @@ for s in "${SAMPLE_SRR[@]}"; do
 
     # run fastqc on raw fastq
     scripts/1_basic_pipeline/a_fastqc.sh \
-        results/1_basic_pipeline/a_fastqc \  # $1 = the results directory
-        data/fastq/$s.fastq.gz               # $2 = the path of the fastq file
+        results/1_basic_pipeline/a_fastqc \
+        data/fastq/$s.fastq.gz
 done
 
 # combine the fastqc results
 scripts/1_basic_pipeline/b_multiqc.sh \
-        results/1_basic_pipeline/b_multiqc \  # $1 = the results directory
-        results/1_basic_pipeline/a_fastqc     # $2 = directory of the fastqc output
+        results/1_basic_pipeline/b_multiqc \
+        results/1_basic_pipeline/a_fastqc
 
 for s in "${SAMPLE_SRR[@]}"; do
 
     # trim the fastq files
     scripts/1_basic_pipeline/c_trim.sh \
-        results/1_basic_pipeline/c_trim \  # $1 = the results directory
-        data/fastq/$s.fastq.gz             # $2 = the path of the fastq file
+        results/1_basic_pipeline/c_trim \
+        data/fastq/$s.fastq.gz
 done
 
 # combine the fastqc results generated for the trimmed fastq files
 scripts/1_basic_pipeline/d_trim_multiqc.sh \
-        results/1_basic_pipeline/d_trim_multiqc \  # $1 = the results directory 
-        results/1_basic_pipeline/c_trim            # $2 = directory of the fastqc output
+        results/1_basic_pipeline/d_trim_multiqc \
+        results/1_basic_pipeline/c_trim
 
-# genome files must be unzipped for STAR indexing
-gunzip -fdk data/GCF_000004515.6_Glycine_max_v4.0_genomic.fna.gz -C results/1_basic_pipeline/e_star_index/
-gunzip -fdk data/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf.gz -C results/1_basic_pipeline/e_star_index/
+create_folder "e_star_index"
 
 # index the genome using STAR
 scripts/1_basic_pipeline/e_star_index.sh \
-        results/1_basic_pipeline/e_star_index/ \                                              # $1 = directory to save indices
-        results/1_basic_pipeline/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.fna \  # $2 = genome fasta files
-        results/1_basic_pipeline/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf    # $3 = genome annotation file file
+        results/1_basic_pipeline/e_star_index/ \
+        data/genome/GCF_000004515.6_Glycine_max_v4.0_genomic.fna.gz \
+        data/genome/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf.gz \
+        3 \
+        6
 
-# remove unzipped fasta
-rm results/1_basic_pipeline/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.fna
+create_folder "f_align_and_count"
 
 for s in "${SAMPLE_SRR[@]}"; do
 
+
     # perform alignment using STAR, providing the directory of the indexed genome
-    scripts/1_basic_pipeline/f_star_align.sh \
-        results/1_basic_pipeline/e_star_index \        # $1 = the location of the indexed genome
-        results/1_basic_pipeline/c_trim/$s.fastq.gz \  # $2 = the location of the trimmed fastq file
-        results/1_basic_pipeline/f_star_align/$s       # $3 = the prefix of the output file
+    scripts/1_basic_pipeline/f_align_and_count.sh \
+        results/1_basic_pipeline/e_star_index \
+        results/1_basic_pipeline/c_trim/"$s"_trimmed.fq.gz \
+        results/1_basic_pipeline/f_align_and_count/$s \
+        6 \
+        results/1_basic_pipeline/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf
 
     # generate a counts matrix from the alignment
     scripts/1_basic_pipeline/g_htseq_count.sh \
-        results/1_basic_pipeline/f_star_align/$s.bam \                                        # $1 = the alignment file
-        results/1_basic_pipeline/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf \  # $2 = the annotation file
-        results/1_basic_pipeline/g_htseq_count/$s                                             # $3 = the prefix of the output file
+        results/1_basic_pipeline/f_align_and_count/"$s"Aligned.sortedByCoord.out.bam \
+        
+        results/1_basic_pipeline/f_align_and_count/$s
 done
 
 # remove unzipped gtf
 rm results/1_basic_pipeline/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf
 
+create_folder "g_combine_counts"
+
 # combine the counts for each sample into a single matrix
-scripts/1_basic_pipeline/h_combine_counts.sh \
-    results/1_basic_pipeline/g_htseq_count/ \                      # $1 = directory containing counts
-    results/1_basic_pipeline/h_combine_counts/combined_counts.txt  # $2 = output file path
+scripts/1_basic_pipeline/g_combine_counts.sh \
+    results/1_basic_pipeline/f_align_and_count/ \
+    results/1_basic_pipeline/g_combine_counts/combined_counts.txt
