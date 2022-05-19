@@ -85,9 +85,8 @@ done
 # remove unzipped gtf
 rm results/1_basic_pipeline/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf
 
-create_folder "g_combine_counts"
-
-# combine the counts for each sample into a single matrix
-scripts/1_basic_pipeline/g_combine_counts.sh \
-    results/1_basic_pipeline/f_align_and_count/ \
-    results/1_basic_pipeline/g_combine_counts/combined_counts.txt
+# use multiqc to assess the alignment and counts
+scripts/1_basic_pipeline/g_final_multiqc.sh \
+    results/1_basic_pipeline/g_final_multiqc \
+    results/1_basic_pipeline/c_trim \
+    results/1_basic_pipeline/f_align_and_count
