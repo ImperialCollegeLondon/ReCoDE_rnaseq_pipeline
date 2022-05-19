@@ -40,3 +40,6 @@ vignettes/*.pdf
 
 # Ignore results folders
 *results/
+
+# Ignore temporary folders
+_STARtmp/

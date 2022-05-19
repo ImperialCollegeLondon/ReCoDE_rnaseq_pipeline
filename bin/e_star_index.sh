@@ -6,18 +6,18 @@
 # $5 = number of threads for STAR to use
 
 # genome files must be unzipped for STAR indexing
-gzip -cfdk $2 > results/1_basic_pipeline/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.fna
-gzip -cfdk $3 > results/1_basic_pipeline/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf
+gzip -cfdk $2 > $1/GCF_000004515.6_Glycine_max_v4.0_genomic.fna
+gzip -cfdk $3 > $1/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf
 
 # generate genome indices
 # can use --genomeSAsparseD as an argument if STAR uses too much memory
 STAR --runMode genomeGenerate \
      --genomeDir $1 \
-     --genomeFastaFiles results/1_basic_pipeline/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.fna \
-     --sjdbGTFfile results/1_basic_pipeline/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf \
+     --genomeFastaFiles $1/GCF_000004515.6_Glycine_max_v4.0_genomic.fna \
+     --sjdbGTFfile $1/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf \
      --genomeSAindexNbases 13 \
      --genomeSAsparseD $4 \
      --runThreadN $5
 
 # remove unzipped fasta
-rm results/1_basic_pipeline/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.fna
+rm $1/GCF_000004515.6_Glycine_max_v4.0_genomic.fna
