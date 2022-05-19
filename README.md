@@ -10,7 +10,7 @@ In this exemplar, we will demonstrate the development of a pipeline for processi
 - Downstream statistical analysis:
   - Data normalisation 
   - Unsupervised analysis (e.g. PCA)
-  - Differential expression and enrichment using DESeq2
+  - Differential expression and enrichment using edgeR
 
 We will write scripts, using bash and the R programming language, that can execute these steps in parallel on the RCS. 
 
