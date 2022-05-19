@@ -18,11 +18,15 @@ readarray -t SAMPLE_SRR < data/files.txt
 
 # function creates a results folder if it doesn't already exist
 create_folder () {
-    if [ ! -e  results/1_basic_pipeline/$1 ]; then
-        mkdir results/1_basic_pipeline/$1
+    if [ ! -e  1_basic_pipeline_results/$1 ]; then
+        mkdir 1_basic_pipeline_results/$1
     fi
 }
 
+# make the top level results folder
+create_folder ""
+
+# make a subfolder for the fastqc output
 create_folder "a_fastqc"
 
 # for each sample
@@ -65,7 +69,6 @@ scripts/1_basic_pipeline/e_star_index.sh \
 create_folder "f_align_and_count"
 
 for s in "${SAMPLE_SRR[@]}"; do
-
 
     # perform alignment using STAR, providing the directory of the indexed genome
     scripts/1_basic_pipeline/f_align_and_count.sh \
