@@ -18,6 +18,3 @@ STAR --runMode genomeGenerate \
      --genomeSAindexNbases 13 \
      --genomeSAsparseD $4 \
      --runThreadN $5
-
-# remove unzipped fasta
-rm $1/GCF_000004515.6_Glycine_max_v4.0_genomic.fna

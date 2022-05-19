@@ -67,10 +67,10 @@ bin/e_star_index.sh \
         3 \
         6
 
-create_folder "f_align_and_count"
+# remove unzipped fasta
+rm $RES_DIR/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.fna
 
-# these lines needed to be removed for htseq to run
-sed -i "1326025d;1326521d" $RES_DIR/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf
+create_folder "f_align_and_count"
 
 for s in "${SAMPLE_SRR[@]}"; do
 
@@ -81,6 +81,9 @@ for s in "${SAMPLE_SRR[@]}"; do
         $RES_DIR/f_align_and_count/$s \
         6 \
         $RES_DIR/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf
+
+    # remove unzipped fastq
+    rm $RES_DIR/f_align_and_count/$s.fastq 
 
     # check the counts have been successfully created
     if [ -e  $RES_DIR/f_align_and_count/$s.counts ]; then

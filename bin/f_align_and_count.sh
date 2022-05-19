@@ -8,15 +8,15 @@
 # unzip fastq for alignment
 gzip -cfdk $2 > $3.fastq
 
+# these lines needed to be removed for htseq to run
+sed -i "1326025d;1326521d" $5
+
 # perform alignment
 STAR --genomeDir $1 \
      --readFilesIn $3.fastq \
      --outSAMtype BAM SortedByCoordinate \
      --outFileNamePrefix $3 \
      --runThreadN $4
-
-# remove unzipped fastq
-rm $3.fastq
 
 # index the alignment for htseq
 samtools index $3Aligned.sortedByCoord.out.bam
