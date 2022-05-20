@@ -18,3 +18,6 @@ STAR --runMode genomeGenerate \
      --genomeSAindexNbases 13 \
      --genomeSAsparseD $4 \
      --runThreadN $5
+
+# these lines needed to be removed for htseq to run
+sed -i "1326025d;1326521d" $1/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf
