@@ -7,11 +7,14 @@ if [ ! -f data/files.txt ]; then
     data/get_data.sh
 fi
 
-# get number of samples to run
+# get names of samples to run
 readarray -t SAMPLE_SRR < data/files.txt
 
 # where to save the pipeline results
 RES_DIR="1_simple_local_pipeline_results"
+
+# number of cores available
+NUM_CORES=6
 
 # make the top level results folder
 if [ -e  $RES_DIR ]; then
@@ -49,7 +52,8 @@ for s in "${SAMPLE_SRR[@]}"; do
     # trim the fastq files
     bin/c_trim.sh \
         $RES_DIR/c_trim \
-        data/fastq/$s.fastq.gz
+        data/fastq/$s.fastq.gz \
+        $NUM_CORES
 done
 
 # combine the fastqc results generated for the trimmed fastq files
@@ -65,7 +69,7 @@ bin/e_star_index.sh \
         data/genome/GCF_000004515.6_Glycine_max_v4.0_genomic.fna.gz \
         data/genome/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf.gz \
         3 \
-        6
+        $NUM_CORES
 
 # remove unzipped fasta
 rm $RES_DIR/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.fna
@@ -79,7 +83,7 @@ for s in "${SAMPLE_SRR[@]}"; do
         $RES_DIR/e_star_index \
         $RES_DIR/c_trim/"$s"_trimmed.fq.gz \
         $RES_DIR/f_align_and_count/$s \
-        6 \
+        $NUM_CORES \
         $RES_DIR/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf
 
     # remove unzipped fastq
