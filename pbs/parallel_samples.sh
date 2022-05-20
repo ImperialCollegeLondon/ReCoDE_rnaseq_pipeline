@@ -1,6 +1,9 @@
 #PBS -lselect=1:ncpus=4:mem=32gb
 #PBS -lwalltime=01:00:00
 
+# cd to the directory the job was launched from
+cd $PBS_O_WORKDIR 
+
 # number of cores available
 NUM_CORES=4
 

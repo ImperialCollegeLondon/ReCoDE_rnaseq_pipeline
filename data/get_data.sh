@@ -1,8 +1,4 @@
 
-# if necessary, load the relevant command line tool on the computing cluster
-# module load sratoolkit/2.8.1
-# export PATH=$PATH:~/apps/sratoolkit.3.0.0-ubuntu64/bin
-
 # a vector of the sequence read archive identifiers for the RNA-seq samples
 #            1           2           3           4           5           6
 SAMPLE_SRR=("SRR391535" "SRR391536" "SRR391537" "SRR391538" "SRR391539" "SRR391541")

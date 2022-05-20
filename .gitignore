@@ -43,3 +43,12 @@ vignettes/*.pdf
 
 # Ignore temporary folders
 _STARtmp/
+Log.out
+
+# Ignore cluster files
+setup_pipeline.sh.e*
+setup_pipeline.sh.o*
+parallel_samples.sh.e*
+parallel_samples.sh.o*
+multiqc.sh.e*
+multiqc.sh.o*

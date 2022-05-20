@@ -1,5 +1,8 @@
 #PBS -lselect=1:ncpus=1:mem=4gb
-#PBS -lwalltime=00:30:00
+#PBS -lwalltime=10:00:00
+
+# cd to the directory the job was launched from
+cd $PBS_O_WORKDIR 
 
 # stop running the script if there are errors
 set -e
