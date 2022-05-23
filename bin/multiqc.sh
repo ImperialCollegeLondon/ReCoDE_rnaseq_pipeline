@@ -4,4 +4,4 @@
 # $3 = directory 2 (e.g. results/1_basic_pipeline/f_align_and_count)
 
 # group together fastqc reports
-multiqc -o $1 $2 $3
+multiqc -f -o $1 $2 $3
