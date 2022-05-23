@@ -52,3 +52,7 @@ parallel_samples.sh.e*
 parallel_samples.sh.o*
 multiqc.sh.e*
 multiqc.sh.o*
+
+# Ignore nextflow outputs
+*.nextflow*
+work/
