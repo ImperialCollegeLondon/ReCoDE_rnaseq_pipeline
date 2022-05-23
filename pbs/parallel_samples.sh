@@ -23,7 +23,7 @@ RES_DIR="2_parallelised_pipeline_results"
 module load fastqc/0.11.9
 
 # run fastqc on raw fastq
-bin/a_fastqc.sh \
+bin/fastqc.sh \
     $RES_DIR/a_fastqc \
     data/fastq/$s.fastq.gz \
     $s
@@ -33,7 +33,7 @@ module load trim_galore/0.4.1
 module load cutadapt/1.9.1
 
 # trim the fastq files
-bin/c_trim.sh \
+bin/trim.sh \
     $RES_DIR/c_trim \
     data/fastq/$s.fastq.gz \
     $s
@@ -43,7 +43,7 @@ module load star/2.7.1a
 module load htseq/0.6.1
 
 # perform alignment using STAR, providing the directory of the indexed genome
-bin/f_align_and_count.sh \
+bin/align_and_count.sh \
     $RES_DIR/e_star_index \
     $RES_DIR/c_trim/"$s"_trimmed.fq.gz \
     $RES_DIR/f_align_and_count/$s \

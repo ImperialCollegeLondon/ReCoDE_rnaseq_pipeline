@@ -15,12 +15,12 @@ module load multiqc/0.6
 source activate multiqc
 
 # combine the fastqc results
-bin/b_multiqc.sh \
+bin/multiqc.sh \
         $RES_DIR/b_multiqc \
         $RES_DIR/a_fastqc
 
 # combine the fastqc results generated for the trimmed fastq files
-bin/d_trim_multiqc.sh \
+bin/multiqc.sh \
         $RES_DIR/d_trim_multiqc \
         $RES_DIR/c_trim
 
@@ -28,7 +28,7 @@ bin/d_trim_multiqc.sh \
 rm $RES_DIR/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf
 
 # use multiqc to assess the alignment and counts
-bin/g_final_multiqc.sh \
+bin/multiqc.sh \
     $RES_DIR/g_final_multiqc \
     $RES_DIR/c_trim \
     $RES_DIR/f_align_and_count

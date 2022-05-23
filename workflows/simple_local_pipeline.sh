@@ -38,35 +38,35 @@ create_folder "c_trim"
 for s in "${SAMPLE_SRR[@]}"; do
 
     # run fastqc on raw fastq
-    bin/a_fastqc.sh \
+    bin/fastqc.sh \
         $RES_DIR/a_fastqc \
         data/fastq/$s.fastq.gz \
         $s
 done
 
 # combine the fastqc results
-bin/b_multiqc.sh \
+bin/multiqc.sh \
         $RES_DIR/b_multiqc \
         $RES_DIR/a_fastqc
 
 for s in "${SAMPLE_SRR[@]}"; do
 
     # trim the fastq files
-    bin/c_trim.sh \
+    bin/trim.sh \
         $RES_DIR/c_trim \
         data/fastq/$s.fastq.gz \
         $s
 done
 
 # combine the fastqc results generated for the trimmed fastq files
-bin/d_trim_multiqc.sh \
+bin/multiqc.sh \
         $RES_DIR/d_trim_multiqc \
         $RES_DIR/c_trim
 
 create_folder "e_star_index"
 
 # index the genome using STAR
-bin/e_star_index.sh \
+bin/star_index.sh \
         $RES_DIR/e_star_index/ \
         data/genome/GCF_000004515.6_Glycine_max_v4.0_genomic.fna.gz \
         data/genome/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf.gz \
@@ -81,7 +81,7 @@ create_folder "f_align_and_count"
 for s in "${SAMPLE_SRR[@]}"; do
 
     # perform alignment using STAR, providing the directory of the indexed genome
-    bin/f_align_and_count.sh \
+    bin/align_and_count.sh \
         $RES_DIR/e_star_index \
         $RES_DIR/c_trim/"$s"_trimmed.fq.gz \
         $RES_DIR/f_align_and_count/$s \
@@ -107,7 +107,7 @@ done
 rm $RES_DIR/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf
 
 # use multiqc to assess the alignment and counts
-bin/g_final_multiqc.sh \
+bin/multiqc.sh \
     $RES_DIR/g_final_multiqc \
     $RES_DIR/c_trim \
     $RES_DIR/f_align_and_count

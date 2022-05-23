@@ -42,7 +42,7 @@ create_folder "e_star_index"
 module load star/2.7.1a
 
 # index the genome using STAR
-bin/e_star_index.sh \
+bin/star_index.sh \
         $RES_DIR/e_star_index/ \
         data/genome/GCF_000004515.6_Glycine_max_v4.0_genomic.fna.gz \
         data/genome/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf.gz \
