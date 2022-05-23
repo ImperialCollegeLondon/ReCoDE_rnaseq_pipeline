@@ -32,6 +32,7 @@ create_folder () {
 
 # make a subfolder for the fastqc output
 create_folder "a_fastqc"
+create_folder "c_trim"
 
 # for each sample
 for s in "${SAMPLE_SRR[@]}"; do
@@ -39,7 +40,8 @@ for s in "${SAMPLE_SRR[@]}"; do
     # run fastqc on raw fastq
     bin/a_fastqc.sh \
         $RES_DIR/a_fastqc \
-        data/fastq/$s.fastq.gz
+        data/fastq/$s.fastq.gz \
+        $s
 done
 
 # combine the fastqc results
@@ -53,7 +55,7 @@ for s in "${SAMPLE_SRR[@]}"; do
     bin/c_trim.sh \
         $RES_DIR/c_trim \
         data/fastq/$s.fastq.gz \
-        $NUM_CORES
+        $s
 done
 
 # combine the fastqc results generated for the trimmed fastq files

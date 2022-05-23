@@ -1,5 +1,5 @@
 #PBS -lselect=1:ncpus=1:mem=4gb
-#PBS -lwalltime=10:00:00
+#PBS -lwalltime=00:00:30
 
 # cd to the directory the job was launched from
 cd $PBS_O_WORKDIR 
@@ -9,6 +9,10 @@ set -e
 
 # where to save the pipeline results
 RES_DIR="2_parallelised_pipeline_results"
+
+# load multiqc
+module load multiqc/0.6
+source activate multiqc
 
 # combine the fastqc results
 bin/b_multiqc.sh \

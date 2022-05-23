@@ -1,11 +1,11 @@
-#PBS -lselect=1:ncpus=4:mem=32gb
+#PBS -lselect=1:ncpus=2:mem=16gb
 #PBS -lwalltime=01:00:00
 
 # cd to the directory the job was launched from
 cd $PBS_O_WORKDIR 
 
 # number of cores available
-NUM_CORES=4
+NUM_CORES=2
 
 # stop running the script if there are errors
 set -e
@@ -19,16 +19,28 @@ s="${SAMPLE_SRR[$PBS_ARRAY_INDEX - 1]}"
 # where to save the pipeline results
 RES_DIR="2_parallelised_pipeline_results"
 
+# load fastqc
+module load fastqc/0.11.9
+
 # run fastqc on raw fastq
 bin/a_fastqc.sh \
     $RES_DIR/a_fastqc \
-    data/fastq/$s.fastq.gz
+    data/fastq/$s.fastq.gz \
+    $s
+
+# load trimgalore
+module load trim_galore/0.4.1
+module load cutadapt/1.9.1
 
 # trim the fastq files
 bin/c_trim.sh \
     $RES_DIR/c_trim \
     data/fastq/$s.fastq.gz \
-    $NUM_CORES
+    $s
+
+# load STAR and htseq
+module load star/2.7.1a 
+module load htseq/0.6.1
 
 # perform alignment using STAR, providing the directory of the indexed genome
 bin/f_align_and_count.sh \
