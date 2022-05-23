@@ -41,7 +41,7 @@ for s in "${SAMPLE_SRR[@]}"; do
     bin/fastqc.sh \
         $RES_DIR/a_fastqc \
         data/fastq/$s.fastq.gz \
-        $s
+        $RES_DIR/a_fastqc/$s
 done
 
 # combine the fastqc results
@@ -55,7 +55,7 @@ for s in "${SAMPLE_SRR[@]}"; do
     bin/trim.sh \
         $RES_DIR/c_trim \
         data/fastq/$s.fastq.gz \
-        $s
+        $RES_DIR/c_trim/$s
 done
 
 # combine the fastqc results generated for the trimmed fastq files
