@@ -8,16 +8,21 @@ process STAR_INDEX {
     path annotation
 
     output:
-    path "*", emit: indexed_genome
-    path "*.gtf", emit: unzipped_annotation
+    path "indexed_genome", emit: indexed_genome
+    path "indexed_genome/SAindex", emit: sa_index
+    path "*.gtf", emit: annotation
 
     script:
     """
+    mkdir indexed_genome
+
     $baseDir/bin/star_index.sh \
-        "./" \
-        $genome \
-        $annotation \
-        $params.sparse_d \
-        $task.cpus
+        "indexed_genome" \
+        "$genome" \
+        "$annotation" \
+        "$params.sparse_d" \
+        "$task.cpus"
+
+    mv indexed_genome/*gtf ./
     """
 }

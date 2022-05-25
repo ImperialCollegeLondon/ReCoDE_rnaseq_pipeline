@@ -1,5 +1,3 @@
-// nextflow workflow, can be run using: nextflow main.nf -profile test,docker
-
 // import local modules
 include { FASTQC } from "$baseDir/modules/fastqc.nf"
 include { MULTIQC } from "$baseDir/modules/multiqc.nf"
@@ -14,10 +12,6 @@ workflow PROCESS_RNASEQ {
     input_fastq = Channel.fromPath("${params.fastqc_dir}/*.fastq.gz").map {
         tuple( it.name.split('\\.')[0], it )
     }
-
-    // get the genome and its annotation
-    input_genome = Channel.fromPath("${params.genome_dir}/*.fna.gz")
-    input_annotation = Channel.fromPath("${params.genome_dir}/*.gtf.gz")
 
     // apply QC to the raw reads
     FASTQC(input_fastq)
@@ -49,10 +43,14 @@ workflow PROCESS_RNASEQ {
     if (params.align) {
 
         // index the genome for alignment
-        STAR_INDEX(input_genome, input_annotation)
+        STAR_INDEX(file("$params.genome_fasta"), file("$params.genome_gtf"))
 
         // align reads and get gene counts
-        ALIGN_AND_COUNT(ch_fastq_to_align, STAR_INDEX.out.indexed_genome, STAR_INDEX.out.unzipped_annotation)
+        ALIGN_AND_COUNT(
+            ch_fastq_to_align, 
+            STAR_INDEX.out.indexed_genome, 
+            STAR_INDEX.out.annotation
+        )
 
         // define channels for multiqc
         ch_star_log = ALIGN_AND_COUNT.out.log_final
@@ -65,11 +63,11 @@ workflow PROCESS_RNASEQ {
         ch_counts = Channel.empty()
     }
 
-    // MULTIQC(
-    //     FASTQC.out.fastqc_zip.collect().ifEmpty([]),
-    //     ch_trimmed_fastqc_zip.collect().ifEmpty([]),
-    //     ch_trimming_report.collect().ifEmpty([]),
-    //     ch_star_log.collect().ifEmpty([]),
-    //     ch_counts.collect().ifEmpty([])
-    // )
+    MULTIQC(
+        FASTQC.out.fastqc_zip.collect().ifEmpty([]),
+        ch_trimmed_fastqc_zip.collect().ifEmpty([]),
+        ch_trimming_report.collect().ifEmpty([]),
+        ch_star_log.collect().ifEmpty([]),
+        ch_counts.collect().ifEmpty([])
+    )
 }
