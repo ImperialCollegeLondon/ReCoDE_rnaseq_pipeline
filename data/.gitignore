@@ -3,3 +3,5 @@
 !.gitignore
 !get_data.sh
 !README.md
+!test/
+!test/*
