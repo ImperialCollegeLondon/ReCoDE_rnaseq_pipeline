@@ -1,5 +1,5 @@
 #PBS -lselect=1:ncpus=1:mem=4gb
-#PBS -lwalltime=00:00:30
+#PBS -lwalltime=00:30:00
 
 # cd to the directory the job was launched from
 cd $PBS_O_WORKDIR 

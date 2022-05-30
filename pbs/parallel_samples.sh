@@ -26,7 +26,7 @@ module load fastqc/0.11.9
 bin/fastqc.sh \
     $RES_DIR/a_fastqc \
     data/fastq/$s.fastq.gz \
-    $s
+    $RES_DIR/a_fastqc/$s
 
 # load trimgalore
 module load trim_galore/0.4.1
@@ -36,7 +36,7 @@ module load cutadapt/1.9.1
 bin/trim.sh \
     $RES_DIR/c_trim \
     data/fastq/$s.fastq.gz \
-    $s
+    $RES_DIR/c_trim/$s
 
 # load STAR and htseq
 module load star/2.7.1a 

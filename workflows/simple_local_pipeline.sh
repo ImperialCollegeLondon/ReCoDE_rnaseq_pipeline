@@ -41,7 +41,7 @@ for s in "${SAMPLE_SRR[@]}"; do
     bin/fastqc.sh \
         $RES_DIR/a_fastqc \
         data/fastq/$s.fastq.gz \
-        $s
+        $RES_DIR/a_fastqc/$s
 done
 
 # combine the fastqc results
@@ -55,7 +55,7 @@ for s in "${SAMPLE_SRR[@]}"; do
     bin/trim.sh \
         $RES_DIR/c_trim \
         data/fastq/$s.fastq.gz \
-        $s
+        $RES_DIR/c_trim/$s
 done
 
 # combine the fastqc results generated for the trimmed fastq files
@@ -67,7 +67,7 @@ create_folder "e_star_index"
 
 # index the genome using STAR
 bin/star_index.sh \
-        $RES_DIR/e_star_index/ \
+        $RES_DIR/e_star_index \
         data/genome/GCF_000004515.6_Glycine_max_v4.0_genomic.fna.gz \
         data/genome/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf.gz \
         3 \
