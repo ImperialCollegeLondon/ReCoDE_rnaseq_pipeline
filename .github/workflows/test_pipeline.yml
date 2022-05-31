@@ -29,6 +29,10 @@ jobs:
         run: |
           wget -qO- get.nextflow.io | bash
           sudo mv nextflow /usr/local/bin/
+
+      - name: Make scripts executable
+        run: |
+          chmod +x /home/runner/work/ReCoDE_rnaseq_pipeline/ReCoDE_rnaseq_pipeline/bin/*.sh
       
       - name: Run pipeline
         run: |
