@@ -3,6 +3,8 @@ process TRIM {
     label "long"
     publishDir "$params.outdir/c_trim/", mode: params.publish_dir_mode
 
+    conda "bioconda::trim-galore=0.6.7"
+
     input:
     tuple val(accession), path(fastq)
 
@@ -15,6 +17,9 @@ process TRIM {
     script:
     """
     mkdir trim_tmp
+
+    conda list
+    trim_galore -v
 
     $baseDir/bin/trim.sh \
         "./" \

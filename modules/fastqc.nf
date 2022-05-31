@@ -3,6 +3,8 @@ process FASTQC {
     label "long"
     publishDir "$params.outdir/a_fastqc/", mode: params.publish_dir_mode
 
+    conda "bioconda::fastqc=0.11.9"
+    
     input:
     tuple val(accession), path(fastq)
 

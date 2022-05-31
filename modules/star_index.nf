@@ -3,6 +3,8 @@ process STAR_INDEX {
     label "star_index"
     publishDir "$params.outdir/e_star_index/", mode: params.publish_dir_mode
 
+    conda "bioconda::star=2.7.10a"
+
     input:
     path genome
     path annotation
