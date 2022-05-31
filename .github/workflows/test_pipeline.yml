@@ -1,0 +1,35 @@
+
+# checks that the pipeline runs correctly, see: https://github.com/nf-core/rnaseq/blob/master/.github/workflows/ci.yml
+name: test_pipeline
+
+on: [push, pull_request]
+
+jobs:
+  run_pipeline:
+    name: Run pipeline with test data
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    env:
+      OS: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout pipeline
+        uses: actions/checkout@v2
+
+      - name: Install nextflow
+
+        env:
+          NXF_VER: "21.10.3"
+
+        run: |
+          wget -qO- get.nextflow.io | bash
+          sudo mv nextflow /usr/local/bin/
+      
+      - name: Run pipeline
+        run: |
+          nextflow run ${GITHUB_WORKSPACE} -profile test,conda --outdir ./results
