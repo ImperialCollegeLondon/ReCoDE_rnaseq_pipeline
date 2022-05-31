@@ -4,8 +4,6 @@
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?logo=docker)](https://www.docker.com/)
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg)](https://sylabs.io/docs/)
 
-.. |Build Status| image:: https://github.com/ImperialCollegeLondon/ReCoDE_rnaseq_pipeline/workflows/test_pipeline/badge.svg
-   :target: https://github.com/ImperialCollegeLondon/ReCoDE_rnaseq_pipeline/actions
 # A cluster-based pipeline for the analysis of RNA-sequencing data
 
 The development of next generation sequencing technologies has facilitated a systems-level approach to biological and biomedical research. In particular, RNA sequencing (RNA-seq) has become a ubiquitous method for gene expression profiling. However, the colossal datasets produced by this method pose a new challenge for life science researchers, who commonly have little statistical or computational training. The processing of sequencing data commonly requires the development of custom workflows that can run in parallel on university computing clusters. Furthermore, the quality control and statistical analysis of these data requires specialist knowledge and purpose-built software packages.
