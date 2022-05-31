@@ -3,9 +3,10 @@ process MULTIQC {
     label "short"
     publishDir "$params.outdir/multiqc/", mode: params.publish_dir_mode
 
-    conda "bioconda::multiqc=1.12"
+    conda "bioconda::multiqc=1.12 conda-forge::spectra=0.0.11"
 
     input:
+    path multiqc_config
     path ("fastqc/*")
     path ("trimmed/fastqc/*")
     path ("trimmed/*")
@@ -13,15 +14,14 @@ process MULTIQC {
     path ("htseq/*")
 
     output:
-    path "multiqc_output/*multiqc_report.html"
-    path "multiqc_output/*_data"
+    path "*multiqc_report.html"
+    path "*_data"
 
     script:
     """
-    ls
-    
     $baseDir/bin/multiqc.sh \
-        "./multiqc_output" \
+        "./" \
+        "--config $multiqc_config" \
         "./"
     """
 }

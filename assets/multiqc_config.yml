@@ -1,0 +1,23 @@
+
+export_plots: true
+
+run_modules:
+  - custom_content
+  - fastqc
+  - cutadapt
+  - star
+  - samtools
+  - htseq-count
+
+module_order:
+  - fastqc:
+      name: "Raw FASTQC output"
+      info: "This section of the report shows FastQC results before trimming by trim-galore."
+      path_filters:
+        - "./fastqc/*.zip"
+  - cutadapt
+  - fastqc:
+      name: "Trimmed FASTQC output"
+      info: "This section of the report shows FastQC results after trimming by trim-galore."
+      path_filters:
+        - "./trimmed/fastqc/*.zip"
