@@ -46,15 +46,19 @@ module load htseq/0.6.1
 bin/align_and_count.sh \
     $RES_DIR/e_star_index \
     $RES_DIR/c_trim/"$s"_trimmed.fq.gz \
-    $RES_DIR/f_align_and_count/$s \
-    $NUM_CORES \
-    $RES_DIR/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf
+    $RES_DIR/f_align/$s \
+    $NUM_CORES
 
 # remove unzipped fastq
-rm $RES_DIR/f_align_and_count/$s.fastq 
+rm $RES_DIR/f_align/$s.fastq 
+
+bin/count.sh \
+    $RES_DIR/f_align/"$s"Aligned.sortedByCoord.out.bam \
+    $RES_DIR/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf \
+    $RES_DIR/g_count/$s 
 
 # check the counts have been successfully created
-if [ -e  $RES_DIR/f_align_and_count/$s.counts ]; then
+if [ -e  $RES_DIR/f_align/$s.counts ]; then
     success=""
 else
     success=" not"

@@ -1,3 +1,5 @@
 fastq/
 genome/
 files.txt
+!test/fastq
+!test/genome

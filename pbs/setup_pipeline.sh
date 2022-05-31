@@ -52,4 +52,5 @@ bin/star_index.sh \
 # remove unzipped fasta
 rm $RES_DIR/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.fna
 
-create_folder "f_align_and_count"
+create_folder "f_align"
+create_folder "g_count"

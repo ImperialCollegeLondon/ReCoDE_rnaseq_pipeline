@@ -29,6 +29,7 @@ rm $RES_DIR/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf
 
 # use multiqc to assess the alignment and counts
 bin/multiqc.sh \
-    $RES_DIR/g_final_multiqc \
+    $RES_DIR/h_final_multiqc \
     $RES_DIR/c_trim \
-    $RES_DIR/f_align_and_count
+    $RES_DIR/f_align \
+    $RES_DIR/g_count

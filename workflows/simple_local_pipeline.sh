@@ -76,31 +76,34 @@ bin/star_index.sh \
 # remove unzipped fasta
 rm $RES_DIR/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.fna
 
-create_folder "f_align_and_count"
+create_folder "f_align"
+create_folder "g_count"
 
 for s in "${SAMPLE_SRR[@]}"; do
 
     # perform alignment using STAR, providing the directory of the indexed genome
-    bin/align_and_count.sh \
+    bin/align.sh \
         $RES_DIR/e_star_index \
         $RES_DIR/c_trim/"$s"_trimmed.fq.gz \
-        $RES_DIR/f_align_and_count/$s \
-        $NUM_CORES \
-        $RES_DIR/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf
+        $RES_DIR/f_align/$s \
+        $NUM_CORES
 
     # remove unzipped fastq
-    rm $RES_DIR/f_align_and_count/$s.fastq 
+    rm $RES_DIR/f_align/$s.fastq 
+
+    bin/count.sh \
+        $RES_DIR/f_align/"$s"Aligned.sortedByCoord.out.bam \
+        $RES_DIR/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf \
+        $RES_DIR/g_count/$s 
 
     # check the counts have been successfully created
-    if [ -e  $RES_DIR/f_align_and_count/$s.counts ]; then
+    if [ -e  $RES_DIR/g_count/$s.counts ]; then
         success=""
     else
         success=" not"
     fi
 
     echo "Counts file for sample $s was$success successfully created"
-
-    # TODO: check counts file is non-empty
 done
 
 # remove unzipped gtf
@@ -108,6 +111,7 @@ rm $RES_DIR/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf
 
 # use multiqc to assess the alignment and counts
 bin/multiqc.sh \
-    $RES_DIR/g_final_multiqc \
+    $RES_DIR/h_final_multiqc \
     $RES_DIR/c_trim \
-    $RES_DIR/f_align_and_count
+    $RES_DIR/f_align \
+    $RES_DIR/g_count

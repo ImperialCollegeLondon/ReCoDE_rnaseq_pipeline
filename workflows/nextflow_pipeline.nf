@@ -3,7 +3,7 @@ include { FASTQC } from "$baseDir/modules/fastqc.nf"
 include { MULTIQC } from "$baseDir/modules/multiqc.nf"
 include { TRIM } from "$baseDir/modules/trim.nf"
 include { STAR_INDEX } from "$baseDir/modules/star_index.nf"
-include { ALIGN_AND_COUNT } from "$baseDir/modules/align_and_count.nf"
+include { ALIGN; COUNT } from "$baseDir/modules/align_and_count.nf"
 
 // main pipeline
 workflow PROCESS_RNASEQ {
@@ -46,15 +46,20 @@ workflow PROCESS_RNASEQ {
         STAR_INDEX(file("$params.genome_fasta"), file("$params.genome_gtf"))
 
         // align reads and get gene counts
-        ALIGN_AND_COUNT(
+        ALIGN(
             ch_fastq_to_align, 
-            STAR_INDEX.out.indexed_genome, 
+            STAR_INDEX.out.indexed_genome
+        )
+
+        COUNT(
+            ALIGN.out.aligned_bam, 
             STAR_INDEX.out.annotation
         )
 
+
         // define channels for multiqc
-        ch_star_log = ALIGN_AND_COUNT.out.log_final
-        ch_counts = ALIGN_AND_COUNT.out.counts
+        ch_star_log = ALIGN.out.log_final
+        ch_counts = COUNT.out.counts
 
     } else {
 
