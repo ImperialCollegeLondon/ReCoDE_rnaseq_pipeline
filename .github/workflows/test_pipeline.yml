@@ -1,5 +1,4 @@
 
-# checks that the pipeline runs correctly, see: https://github.com/nf-core/rnaseq/blob/master/.github/workflows/ci.yml
 name: test_pipeline
 
 on: [push, pull_request]
@@ -12,7 +11,8 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest]  # , macos-latest
+        os: [ubuntu-latest]
+        profile: [conda, docker]
 
     env:
       OS: ${{ matrix.os }}
