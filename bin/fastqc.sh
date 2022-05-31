@@ -8,5 +8,3 @@ mkdir $3
 
 # run fastqc on the specified fastq file
 fastqc -o $1 -d $3 $2
-
-rmdir $3

@@ -8,5 +8,3 @@ mkdir $3
 
 # run fastqc on the specified fastq file  
 trim_galore --fastqc --fastqc_args "-d $3" -o $1 $2
-
-rmdir $3
