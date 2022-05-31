@@ -33,6 +33,15 @@ jobs:
       - name: Make scripts executable
         run: |
           chmod +x ${GITHUB_WORKSPACE}/bin/*.sh
+
+          steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup conda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: true
+          channels: anaconda, pytorch, conda-forge
       
       - name: Run pipeline
         run: |
