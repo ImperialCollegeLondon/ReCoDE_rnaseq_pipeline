@@ -1,5 +1,5 @@
 
-name: test_pipeline
+name: Pipeline CI
 
 on: [push, pull_request]
 
