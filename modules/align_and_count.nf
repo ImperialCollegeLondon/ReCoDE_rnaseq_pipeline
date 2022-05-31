@@ -11,7 +11,7 @@ process ALIGN {
 
     output:
     tuple val(accession), path("*Aligned.sortedByCoord.out.bam"), emit: aligned_bam
-    tuple val(accession), path("*Log.final.out"), emit: log_final
+    path "*Log.final.out", emit: log_final
 
     script:
     """
@@ -35,11 +35,11 @@ process COUNT {
     path annotation
 
     output:
-    tuple val(accession), path("*.counts"), emit: counts
+    path "*.counts", emit: counts
 
     script:
     """
-    $baseDir/bin/align_and_count.sh \
+    $baseDir/bin/count.sh \
         "$bam" \
         "$annotation" \
         "$accession"

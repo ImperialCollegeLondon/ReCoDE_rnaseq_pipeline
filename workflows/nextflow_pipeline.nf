@@ -56,7 +56,6 @@ workflow PROCESS_RNASEQ {
             STAR_INDEX.out.annotation
         )
 
-
         // define channels for multiqc
         ch_star_log = ALIGN.out.log_final
         ch_counts = COUNT.out.counts
@@ -69,6 +68,7 @@ workflow PROCESS_RNASEQ {
     }
 
     MULTIQC(
+        params.multiqc_config,
         FASTQC.out.fastqc_zip.collect().ifEmpty([]),
         ch_trimmed_fastqc_zip.collect().ifEmpty([]),
         ch_trimming_report.collect().ifEmpty([]),
