@@ -25,9 +25,6 @@ process TRIM {
     """
     mkdir trim_tmp
 
-    conda list
-    trim_galore -v
-
     $baseDir/bin/trim.sh \
         "./" \
         "$fastq" \
