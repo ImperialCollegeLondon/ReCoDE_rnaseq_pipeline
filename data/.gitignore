@@ -1,7 +1,3 @@
-*
-/*
-!.gitignore
-!get_data.sh
-!README.md
-!test/
-!test/*
+fastq/
+genome/
+files.txt
