@@ -11,8 +11,8 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        profile: [conda, docker]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        profile: [docker]  # , conda
 
     env:
       OS: ${{ matrix.os }}
