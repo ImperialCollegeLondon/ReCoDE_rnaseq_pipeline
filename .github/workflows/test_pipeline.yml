@@ -32,7 +32,7 @@ jobs:
 
       - name: Make scripts executable
         run: |
-          chmod +x /home/runner/work/ReCoDE_rnaseq_pipeline/ReCoDE_rnaseq_pipeline/bin/*.sh
+          chmod +x ${GITHUB_WORKSPACE}/bin/*.sh
       
       - name: Run pipeline
         run: |
