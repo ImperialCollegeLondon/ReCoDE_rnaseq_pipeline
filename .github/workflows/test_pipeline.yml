@@ -30,16 +30,10 @@ jobs:
           wget -qO- get.nextflow.io | bash
           sudo mv nextflow /usr/local/bin/
 
-      - name: Setup conda
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          auto-update-conda: true
-          channels: anaconda, pytorch, conda-forge
-
       - name: Make scripts executable
         run: |
           chmod +x ${GITHUB_WORKSPACE}/bin/*.sh
       
       - name: Run pipeline
         run: |
-          nextflow run ${GITHUB_WORKSPACE} -profile test,conda --outdir ./results
+          nextflow run ${GITHUB_WORKSPACE} -profile test,docker --outdir ./results
