@@ -1,7 +1,7 @@
+#!/bin/bash
 
 # a vector of the sequence read archive identifiers for the RNA-seq samples
-#            1           2           3           4           5           6
-SAMPLE_SRR=("SRR391535" "SRR391536" "SRR391537" "SRR391538" "SRR391539" "SRR391541")
+readarray -t SAMPLE_SRR < data/files.txt
 
 # load fastq-dump command on the cluster
 # module load sra-toolkit/2.8.1
