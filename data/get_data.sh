@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+# This script downloads the full reads and genome to be analysed by the pipeline
+# For a smaller scale test, the repository comes with a subset of these data
 
 # a vector of the sequence read archive identifiers for the RNA-seq samples
 readarray -t SAMPLE_SRR < data/files.txt
@@ -13,14 +16,8 @@ touch data/files.txt
 # for each sample
 for srr in ${SAMPLE_SRR[@]}; do
 
-    # print the sample name
-    echo $srr
-
-    # create file listing the ID and file location
-    echo $srr >> data/files.txt
-
-    # get the sample's file from the sequence read archive
-    fastq-dump --gzip -O data/fastq/ "$srr"
+  # get the sample's file from the sequence read archive
+  fastq-dump --gzip -O data/fastq/ "$srr"
 
 done
 
@@ -30,7 +27,7 @@ done
 mkdir data/genome
 
 wget -O data/genome/GCF_000004515.6_Glycine_max_v4.0_genomic.fna.gz \
-     "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/004/515/GCF_000004515.6_Glycine_max_v4.0/GCF_000004515.6_Glycine_max_v4.0_genomic.fna.gz"
+  https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/004/515/GCF_000004515.6_Glycine_max_v4.0/GCF_000004515.6_Glycine_max_v4.0_genomic.fna.gz
 
 wget -O data/genome/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf.gz \
-     "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/004/515/GCF_000004515.6_Glycine_max_v4.0/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf.gz"
+  https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/004/515/GCF_000004515.6_Glycine_max_v4.0/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf.gz

@@ -1,14 +1,17 @@
 #!/bin/bash
-
-# PBS job specification
+#
+# This script sets up the pipeline by making sure the scripts are executable
+# and indexing the genome using STAR
+#
+# job specification
 #PBS -lselect=1:ncpus=2:mem=32gb
 #PBS -lwalltime=02:00:00
 
-# set to data for the full dataset or $data_dir for the test dataset
-data_dir="data/test"
+# set to data for the full dataset or ${DATA_DIR} for the test dataset
+DATA_DIR="data/test"
 
 # cd to the directory the job was launched from
-cd $PBS_O_WORKDIR 
+cd "$PBS_O_WORKDIR"
 
 # number of cores available
 NUM_CORES=2
@@ -20,6 +23,9 @@ set -e
 chmod u+x data/get_data.sh
 chmod u+x bin/*.sh
 
+# download the full dataset if required
+# data/get_data.sh
+
 # get names of samples to run
 readarray -t SAMPLE_SRR < data/files.txt
 
@@ -27,17 +33,17 @@ readarray -t SAMPLE_SRR < data/files.txt
 RES_DIR="2_parallelised_pipeline_results"
 
 # make the top level results folder
-if [ -e  $RES_DIR ]; then
-    echo "Results folder already exists, previous files may be overwritten."
+if [ -e  "${RES_DIR}" ]; then
+  echo "Results folder already exists, previous files may be overwritten."
 else
-    mkdir $RES_DIR
+  mkdir "${RES_DIR}"
 fi
 
 # function creates subfolders within the results
 create_folder () {
-    if [ ! -e  $RES_DIR/$1 ]; then
-        mkdir $RES_DIR/$1
-    fi
+  if [ ! -e  "${RES_DIR}/$1" ]; then
+    mkdir "${RES_DIR}/$1"
+  fi
 }
 
 create_folder "a_fastqc"
@@ -49,14 +55,14 @@ module load star/2.7.1a
 
 # index the genome using STAR
 bin/star_index.sh \
-        $RES_DIR/e_star_index \
-        $data_dir/genome/GCF_000004515.6_Glycine_max_v4.0_genomic.fna.gz \
-        $data_dir/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf.gz \
-        1 \
-        $NUM_CORES
+  "${RES_DIR}/e_star_index" \
+  "${DATA_DIR}/genome/GCF_000004515.6_Glycine_max_v4.0_genomic.fna.gz" \
+  "${DATA_DIR}/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf.gz" \
+  1 \
+  "${NUM_CORES}"
 
 # remove unzipped fasta
-rm $RES_DIR/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.fna
+rm "${RES_DIR}/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.fna"
 
 create_folder "f_align"
 create_folder "g_count"
