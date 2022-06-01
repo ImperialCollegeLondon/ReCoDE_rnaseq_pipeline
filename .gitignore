@@ -32,6 +32,10 @@ vignettes/*.pdf
 *_cache/
 /cache/
 
+# Markdown output
+notebooks/downstream_analysis_files
+notebooks/downstream_analysis.md
+
 # Temporary files created by R markdown
 *.utf8.md
 *.knit.md
