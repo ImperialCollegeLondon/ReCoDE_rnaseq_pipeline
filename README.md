@@ -1,5 +1,6 @@
 
-# ReCoDE RNA-seq
+ReCoDE RNA-seq
+================
 
 <!-- buttons -->
 [![actions status](https://github.com/ImperialCollegeLondon/ReCoDE_rnaseq_pipeline/workflows/Pipeline%20CI/badge.svg)](https://github.com/ImperialCollegeLondon/ReCoDE_rnaseq_pipeline/actions)
