@@ -1,3 +1,4 @@
+#!/bin/bash
 
 # $1 = the location of the indexed genome (e.g. results/1_basic_pipeline/e_star_index)
 # $2 = the location of the trimmed fastq file (e.g. results/1_basic_pipeline/c_trim/SRR391535_trimmed.fq.gz)

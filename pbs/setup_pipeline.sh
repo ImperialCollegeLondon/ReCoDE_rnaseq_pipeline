@@ -1,5 +1,11 @@
+#!/bin/bash
+
+# PBS job specification
 #PBS -lselect=1:ncpus=2:mem=32gb
 #PBS -lwalltime=02:00:00
+
+# set to data for the full dataset or $data_dir for the test dataset
+data_dir="data/test"
 
 # cd to the directory the job was launched from
 cd $PBS_O_WORKDIR 
@@ -44,8 +50,8 @@ module load star/2.7.1a
 # index the genome using STAR
 bin/star_index.sh \
         $RES_DIR/e_star_index \
-        data/genome/GCF_000004515.6_Glycine_max_v4.0_genomic.fna.gz \
-        data/genome/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf.gz \
+        $data_dir/genome/GCF_000004515.6_Glycine_max_v4.0_genomic.fna.gz \
+        $data_dir/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf.gz \
         1 \
         $NUM_CORES
 

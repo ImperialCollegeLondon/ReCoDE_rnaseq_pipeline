@@ -1,3 +1,4 @@
+#!/bin/bash
 
 # $1 = the input bam file (e.g. results/1_basic_pipeline/f_align/SRR391535Aligned.sortedByCoord.out.bam)
 # $2 = the annotation file (e.g. results/1_basic_pipeline/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf) 

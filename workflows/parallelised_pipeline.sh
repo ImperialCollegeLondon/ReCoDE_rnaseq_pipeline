@@ -1,4 +1,6 @@
 
+#!/bin/bash
+
 # setup the pipeline - including getting the data, setting up folders and indexing the genome
 sp_jid=$(qsub pbs/setup_pipeline.sh)
 

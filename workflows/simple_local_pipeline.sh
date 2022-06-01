@@ -1,11 +1,14 @@
 
+#!/bin/bash
+
 # stop running the script if there are errors
 set -e
 
-# download the data (skip this step if already downloaded)
-if [ ! -f data/files.txt ]; then
-    data/get_data.sh
-fi
+# download the full dataset if required
+# data/get_data.sh
+
+# set to data for the full dataset or data/test for the test dataset
+data_dir="data/test"
 
 # get names of samples to run
 readarray -t SAMPLE_SRR < data/files.txt
@@ -40,7 +43,7 @@ for s in "${SAMPLE_SRR[@]}"; do
     # run fastqc on raw fastq
     bin/fastqc.sh \
         $RES_DIR/a_fastqc \
-        data/fastq/$s.fastq.gz \
+        $data_dir/fastq/$s.fastq.gz \
         $RES_DIR/a_fastqc/$s
 done
 
@@ -54,7 +57,7 @@ for s in "${SAMPLE_SRR[@]}"; do
     # trim the fastq files
     bin/trim.sh \
         $RES_DIR/c_trim \
-        data/fastq/$s.fastq.gz \
+        $data_dir/fastq/$s.fastq.gz \
         $RES_DIR/c_trim/$s
 done
 
@@ -68,8 +71,8 @@ create_folder "e_star_index"
 # index the genome using STAR
 bin/star_index.sh \
         $RES_DIR/e_star_index \
-        data/genome/GCF_000004515.6_Glycine_max_v4.0_genomic.fna.gz \
-        data/genome/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf.gz \
+        $data_dir/genome/GCF_000004515.6_Glycine_max_v4.0_genomic.fna.gz \
+        $data_dir/genome/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf.gz \
         3 \
         $NUM_CORES
 

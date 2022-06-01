@@ -1,5 +1,11 @@
+#!/bin/bash
+
+# PBS job specification
 #PBS -lselect=1:ncpus=2:mem=16gb
 #PBS -lwalltime=01:00:00
+
+# set to data for the full dataset or $data_dir for the test dataset
+data_dir="data/test"
 
 # cd to the directory the job was launched from
 cd $PBS_O_WORKDIR 
@@ -25,7 +31,7 @@ module load fastqc/0.11.9
 # run fastqc on raw fastq
 bin/fastqc.sh \
     $RES_DIR/a_fastqc \
-    data/fastq/$s.fastq.gz \
+    $data_dir/fastq/$s.fastq.gz \
     $RES_DIR/a_fastqc/$s
 
 # load trimgalore
@@ -35,7 +41,7 @@ module load cutadapt/1.9.1
 # trim the fastq files
 bin/trim.sh \
     $RES_DIR/c_trim \
-    data/fastq/$s.fastq.gz \
+    $data_dir/fastq/$s.fastq.gz \
     $RES_DIR/c_trim/$s
 
 # load STAR and htseq

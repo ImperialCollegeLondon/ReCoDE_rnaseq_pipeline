@@ -1,3 +1,4 @@
+#!/bin/bash
 
 # $1 = the results directory (e.g. results/1_basic_pipeline/b_multiqc)
 # $2 = directory 1 (e.g. results/1_basic_pipeline/a_fastqc)

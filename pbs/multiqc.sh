@@ -1,3 +1,6 @@
+#!/bin/bash
+
+# PBS job specification
 #PBS -lselect=1:ncpus=1:mem=4gb
 #PBS -lwalltime=00:30:00
 
