@@ -1,14 +1,19 @@
+
+# ReCoDE RNA-seq
+
 <!-- buttons -->
 [![actions status](https://github.com/ImperialCollegeLondon/ReCoDE_rnaseq_pipeline/workflows/Pipeline%20CI/badge.svg)](https://github.com/ImperialCollegeLondon/ReCoDE_rnaseq_pipeline/actions)
 [![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?logo=anaconda)](https://docs.conda.io/en/latest/)
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?logo=docker)](https://www.docker.com/)
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg)](https://sylabs.io/docs/)
 
-# A cluster-based pipeline for the analysis of RNA-sequencing data
+## Introduction
 
-The development of next generation sequencing technologies has facilitated a systems-level approach to biological and biomedical research. In particular, RNA sequencing (RNA-seq) has become a ubiquitous method for gene expression profiling. However, the colossal datasets produced by this method pose a new challenge for life science researchers, who commonly have little statistical or computational training. The processing of sequencing data commonly requires the development of custom workflows that can run in parallel on university computing clusters. Furthermore, the quality control and statistical analysis of these data requires specialist knowledge and purpose-built software packages.
+This repository is part of the REsearch COmputing and Data science Exemplars (ReCoDE) project. ReCoDE exemplars are annotated high-quality research software projects that aim to support teaching and learning in research computing and data science. Courses on these topics usually focus on a single topic at a time, so ReCoDE exemplars help students understand how this knowledge can be integrated into a functional project.
 
-In this exemplar, we will demonstrate the development of a pipeline for processing RNA-seq datasets on the Imperial College Research Computing Service (RCS) and basic statistical analysis of the normalised data. This will involve: 
+This exemplar involves the development of a pipeline for processing large volumes of biological data. The development of next generation sequencing technologies has facilitated a systems-level approach to biological and biomedical research. In particular, RNA sequencing (RNA-seq) has become a ubiquitous method for gene expression profiling. However, the colossal datasets produced by this method pose a new challenge for life science researchers, who commonly have little statistical or computational training. The processing of sequencing data commonly requires the development of custom workflows that can run in parallel on university computing clusters. Furthermore, the quality control and statistical analysis of these data requires specialist knowledge and purpose-built software packages.
+
+This project demonstrates the development of a pipeline for processing RNA-seq datasets on the computing clusters, such as the Imperial College Research Computing Service (RCS), and basic statistical analysis of the normalised data. This will involve: 
 
 - Quality control and trimming of raw RNA-seq reads
 - Alignment of reads to the human reference genome
@@ -18,9 +23,44 @@ In this exemplar, we will demonstrate the development of a pipeline for processi
   - Unsupervised analysis (e.g. PCA)
   - Differential expression and enrichment using edgeR
 
-We will write scripts, using bash and the R programming language, that can execute these steps in parallel on the RCS. 
+We will write scripts, using bash and the R programming language, that can execute these steps in parallel on computing clusters. 
 
 ![A flow diagram outlining the RNA-seq analysis workflow](assets/flow.png?raw=true "An overview of RNA sequencing, data preprocessing and downstream analysis.")
 
-While there are many tutorials that discuss the processing of RNA-seq data, this exemplar will focus on: i) the parallelisation of bioinformatics tools on the Imperial RCS; ii) the development of a reproducible pipeline, demonstrating the use of environment management systems like conda and potentially introducing workflow languages like nextflow.  
+While there are many tutorials that discuss the processing of RNA-seq data, this exemplar will focus on: i) the parallelisation of bioinformatics tools on computing clusters, such as the Imperial RCS; ii) the development of a reproducible pipeline, introducing methods and tools that can help with this, including:
+- [Nextflow](https://www.nextflow.io/), a workflow management system that makes it easy to develop data-driven pipelines.
+- [Conda](https://docs.conda.io/en/latest/), an package management system that allows you to share your local environment with others.
+- [Docker](https://www.docker.com/), an application for packaging dependencies into a virtual container. 
+- [Git/GitHub](https://github.com/), a version control system that integrates with nextflow to make pipelines shareable.
+- [Continous integration](https://github.com/features/actions), a practice of automatic code testing.
+
+## Quick start
+
+To get started using the pipeline, install [Nextflow](https://www.nextflow.io/docs/latest/getstarted.html) and either of [Docker](https://www.docker.com/), [Singularity](https://sylabs.io/docs) or [Conda](https://docs.conda.io/en/latest/). Then, the following command can be used to run the pipeline using a small test dataset:
+
+```
+nextflow run ImperialCollegeLondon/ReCoDE_rnaseq_pipeline -profile test,docker
+```
+
+Note that this pipeline is not designed to handle all types of RNA-seq data (e.g. it was not designed for paired-read data). If you have large amounts of RNA-seq data to process, we recommend using the [nextflow-core RNA-seq pipeline](https://github.com/nf-core/rnaseq).
+
+## Using the repository for learning
+
+This repository was created with in-depth annotations to explain the process of building the pipeline. The documents in [`learning/`](https://github.com/ImperialCollegeLondon/ReCoDE_rnaseq_pipeline/tree/main/learning) explain how the paralellised data processing pipeline was developed. We created three versions of the pipeline to show how simple pipelines can be integrated and enhanced using Nextflow and other tools. 
+
+1. The first pipeline is a simple bash script that runs each data processing stage sequentially. This method will take a long time to run for larger datasets.
+2. The second pipeline runs the same steps, however it allows each RNA-seq sample to be run in parallel on the Imperial computing cluster. It is a lot faster, but can be unwieldy to use for large numbers of samples.
+3. The full pipeline adapts these steps using Nextflow. This pipeline can be more easily shared with others and will automatically orchestrate the running of large numbers of samples. It will run seamlessly both locally, on computing clusters and on cloud platforms.
+
+To run the simpler pipelines, you will need to install the command line applications listed in [`environment.yml`](https://github.com/ImperialCollegeLondon/ReCoDE_rnaseq_pipeline/blob/main/environment.yml). Alternatively, you can use conda to install these applications, using the following code:
+```
+conda env create -f environment.yml
+conda activate recode_rnaseq
+```
+
+To run the nextflow pipeline, you will need to install Nextflow in addition to either Docker or Conda. You can also install nextflow using conda if preferred.
+
+The downstream analysis steps require less compute power and may require a more custom workflow. So, this is demonstrated separately in an R markdown notebook. You can run this notebook, located in [`notebooks/`](https://github.com/ImperialCollegeLondon/ReCoDE_rnaseq_pipeline/tree/main/notebooks), or you can view a complete markdown version of the notebook in [`learning/`](https://github.com/ImperialCollegeLondon/ReCoDE_rnaseq_pipeline/tree/main/learning). 
+
+## License
 
