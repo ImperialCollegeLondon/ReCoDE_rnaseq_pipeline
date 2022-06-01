@@ -1,0 +1,10 @@
+name: recode_rnaseq
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - star=2.7.10a
+  - fastqc=0.11.9
+  - htseq=0.11.3
+  - multiqc=1.12
+  - trim-galore=0.6.7
