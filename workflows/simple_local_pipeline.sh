@@ -38,7 +38,6 @@ create_folder () {
 
 # make a subfolder for the fastqc output
 create_folder "a_fastqc"
-create_folder "c_trim"
 
 # for each sample
 for s in "${SAMPLE_SRR[@]}"; do
@@ -54,6 +53,9 @@ done
 bin/multiqc.sh \
   "${RES_DIR}/b_multiqc" \
   "${RES_DIR}/a_fastqc"
+
+# make a folder for trimming output
+create_folder "c_trim"
 
 for s in "${SAMPLE_SRR[@]}"; do
 

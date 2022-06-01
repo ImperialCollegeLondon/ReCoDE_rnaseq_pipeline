@@ -10,4 +10,4 @@
 # $4 = directory 3 (e.g. results/1_basic_pipeline/g_count)
 
 # group together fastqc reports
-multiqc -f -o "$1" "$2" "$3" "$4"
+multiqc -f -o "$1" $2 $3 $4
