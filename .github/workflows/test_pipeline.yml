@@ -10,11 +10,11 @@ jobs:
     # creates a matrix of different os/profile configurations
     strategy:
       matrix:
-        os: [ ubuntu-latest, windows-latest ]  # 
+        os: [ ubuntu-latest, macos-latest ] 
         profile: [ docker, conda ]
-        # exclude:
-        #   - os: macos-latest
-        #     profile: docker
+        exclude:
+          - os: macos-latest
+            profile: docker
 
     runs-on: ${{ matrix.os }}
 
@@ -25,7 +25,8 @@ jobs:
       - name: Checkout pipeline
         uses: actions/checkout@v3
 
-      - uses: conda-incubator/setup-miniconda@v2
+      - name: Setup miniconda with mamba
+        uses: conda-incubator/setup-miniconda@v2
         with:
           update-conda: true
           use-mamba: true
@@ -36,8 +37,7 @@ jobs:
           conda-channels: bioconda, conda-forge
 
       - name: Make scripts executable
-        run: |
-          chmod +x ${GITHUB_WORKSPACE}/bin/*.sh
+        run: chmod +x ${GITHUB_WORKSPACE}/bin/*.sh
       
       - name: Run pipeline
         shell: bash -l {0}
