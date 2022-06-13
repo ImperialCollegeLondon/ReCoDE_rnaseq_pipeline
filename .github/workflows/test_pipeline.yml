@@ -37,16 +37,17 @@ jobs:
       - name: Checkout pipeline
         uses: actions/checkout@v3
 
-      - name: Setup conda
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          update-conda: true
-          auto-activate-base: true
+      # - name: Setup conda
+      #   uses: conda-incubator/setup-miniconda@v2
+      #   with:
+      #     update-conda: true
+      #     auto-activate-base: true
 
       - name: Make scripts executable
         run: chmod +x ${GITHUB_WORKSPACE}/bin/*.sh
       
       - name: Run pipeline
         run: |
-          conda install -c conda-forge libarchive 
+          conda clean -a
+          rm -rf /home/runner/conda_pkgs_dir/ 
           nextflow run ${GITHUB_WORKSPACE} -profile test,${{ matrix.profile }} --outdir ./results
