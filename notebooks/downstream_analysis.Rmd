@@ -18,7 +18,7 @@ library(edgeR)  # https://bioconductor.org/packages/release/bioc/html/edgeR.html
 library(SummarizedExperiment)  # https://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html
 
 # package for plotting PCA
-library(ggbiplot)  # https://github.com/vqv/ggbiplot
+library(ggplot2)  # 
 
 # package for making volcano plots
 library(EnhancedVolcano)  # https://bioconductor.org/packages/release/bioc/html/EnhancedVolcano.html
@@ -168,7 +168,7 @@ sample groups.
 ```{r}
 
 # select genes to keep
-fbe_keep <- filterByExpr(se, group = se$condition)
+fbe_keep <- filterByExpr(se, group = se$condition, min.count = 500)
 
 # remove genes that are not in the list
 filtered_se <- se[fbe_keep, ]
@@ -246,7 +246,7 @@ standardisation is recommended to keep different genes on comparable scales.
 # prcomp calculates PCA using singular value decomposition
 cpm_pca <- prcomp(t(assay(filtered_se, 2)), center = TRUE, scale. = TRUE)
 
-print(cpm_pca)
+print(cpm_pca$x)
 
 ```
 
@@ -263,10 +263,11 @@ without knowledge of labels of interest.
 
 ```{r}
 
-# use the ggbiplot package to plot the PCA
-ggbiplot(cpm_pca, groups = filtered_se$condition, ellipse = TRUE) +
-  scale_color_discrete(name = '') +
-  theme(legend.position = 'right')
+pca_df <- data.frame(condition = filtered_se$condition, cpm_pca$x)
+
+# use the ggplot package to plot the PCA
+ggplot(pca_df, aes(PC1, PC2, col = condition)) +
+    geom_point()
 
 ```
 
