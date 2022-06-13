@@ -27,8 +27,9 @@ jobs:
           NXF_VER: "21.10.3"
 
         run: |
-          wget -qO- get.nextflow.io | bash
-          sudo mv nextflow /usr/local/bin/
+          conda install mamba
+          mamba env create ${GITHUB_WORKSPACE}/environment.yml
+          conda activate recode_rnaseq
 
       - name: Make scripts executable
         run: |

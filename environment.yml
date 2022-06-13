@@ -9,3 +9,4 @@ dependencies:
   - multiqc=1.12
   - trim-galore=0.6.7
   - sra-tools=2.11.0
+  - nextflow=22.04.0
