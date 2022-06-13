@@ -43,8 +43,8 @@ jobs:
           use-mamba: true
           mamba-version: 0.24.0
           environment-file: environment.yml
-          activate-environment: recode_rnaseq
-          auto-activate-base: false
+          activate-environment: base
+          auto-activate-base: true
           conda-channels: bioconda, conda-forge
 
       - name: Run pipeline
