@@ -49,8 +49,8 @@ jobs:
       - name: Run pipeline
         run: |
           conda clean -a
-          
+
           rm -rf /home/runner/conda_pkgs_dir/ 
-          rm -f /usr/share/miniconda/pkgs/openjdk*
+          rm -rf /usr/share/miniconda/pkgs
 
           nextflow run ${GITHUB_WORKSPACE} -profile test,${{ matrix.profile }} --outdir ./results
