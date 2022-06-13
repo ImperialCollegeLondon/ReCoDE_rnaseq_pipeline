@@ -34,7 +34,6 @@ jobs:
           wget -qO- get.nextflow.io | bash
           sudo mv nextflow /usr/local/bin/
 
-              steps:
       - name: Checkout pipeline
         uses: actions/checkout@v3
 
