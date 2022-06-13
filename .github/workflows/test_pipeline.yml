@@ -32,6 +32,7 @@ jobs:
           mamba-version: 0.24.0
           environment-file: environment.yml
           activate-environment: recode_rnaseq
+          auto-activate-base: false
           conda-channels: bioconda, conda-forge
 
       # - name: Install nextflow with conda/mamba
@@ -51,7 +52,5 @@ jobs:
       
       - name: Run pipeline
         run: |
-          conda list
-          conda activate recode_rnaseq
-          conda list
+          conda info
           nextflow run ${GITHUB_WORKSPACE} -profile test,${{ matrix.profile }} --outdir ./results
