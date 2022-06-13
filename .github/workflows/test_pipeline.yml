@@ -51,6 +51,7 @@ jobs:
           chmod +x ${GITHUB_WORKSPACE}/bin/*.sh
       
       - name: Run pipeline
+        shell: bash -l {0}
         run: |
           conda info
           nextflow run ${GITHUB_WORKSPACE} -profile test,${{ matrix.profile }} --outdir ./results
