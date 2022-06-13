@@ -1,4 +1,3 @@
-
 #!/bin/bash
 #
 # This script sets up the jobs in pbs/ on the imperial cluster

@@ -1,8 +1,16 @@
-
 #!/bin/bash
 #
 # A simple script to run each stage of the pipeline in bin/
 # if you want to change the data to be run, change the DATA_DIR variable
+
+# create conda environment if needed
+# conda env remove -n recode_rnaseq
+# conda update conda
+# conda install mamba
+# mamba env create -f environment.yml
+
+# activate conda environment
+conda activate recode_rnaseq
 
 # stop running the script if there are errors
 set -e
