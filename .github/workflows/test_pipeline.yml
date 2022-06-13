@@ -10,8 +10,8 @@ jobs:
     # creates a matrix of different os/profile configurations
     strategy:
       matrix:
-        os: [ ubuntu-latest ] # , macos-latest
-        profile: [ conda ]  # docker, 
+        os: [ ubuntu-latest, macos-latest ] 
+        profile: [ docker, conda ]
         exclude:
           - os: macos-latest
             profile: docker
