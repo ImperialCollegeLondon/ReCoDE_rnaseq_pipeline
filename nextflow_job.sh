@@ -12,6 +12,9 @@
 #PBS -lselect=1:ncpus=4:mem=16gb
 #PBS -lwalltime=06:00:00
 
+# cd to the directory the job was launched from
+cd "$PBS_O_WORKDIR"
+
 # activate conda module on the imperial cluster
 module load anaconda3/personal
 
@@ -24,4 +27,11 @@ module load anaconda3/personal
 # activate conda environment
 source activate recode_rnaseq
 
-nextflow ImperialCollegeLondon/ReCoDE_rnaseq_pipeline -profile test,imperial_rcs
+# export environment variables
+export NXF_OPTS="-Xms1g -Xmx4g"
+export NXF_TEMP="/rds/general/ephemeral/user/$USER/ephemeral/tmp"
+export NXF_WORK="/rds/general/ephemeral/user/$USER/ephemeral/tmp/work"
+export NXF_SINGULARITY_CACHEDIR="/rds/general/ephemeral/user/$USER/ephemeral/singularity_cache"
+
+# run ImperialCollegeLondon/ReCoDE_rnaseq_pipeline
+nextflow run main.nf -profile imperial_rcs
