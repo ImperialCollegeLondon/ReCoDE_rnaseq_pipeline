@@ -10,7 +10,7 @@ jobs:
     # creates a matrix of different os/profile configurations
     strategy:
       matrix:
-        os: [ ubuntu-latest, windows-latest ]
+        os: [ ubuntu-latest ]  # , windows-latest
         profile: [ docker ]
 
     runs-on: ${{ matrix.os }}
@@ -29,9 +29,9 @@ jobs:
 
         run: |
           conda install mamba -c conda-forge
-          $CONDA/bin/activate
+          $CONDA/bin/activate base
           mamba env create -f ${GITHUB_WORKSPACE}/environment.yml
-          conda activate recode_rnaseq
+          $CONDA/bin/activate recode_rnaseq
 
       - name: Make scripts executable
         run: |
