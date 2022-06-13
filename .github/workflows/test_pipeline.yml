@@ -41,10 +41,12 @@ jobs:
         uses: conda-incubator/setup-miniconda@v2
         with:
           update-conda: true
-          auto-activate-base: false
+          auto-activate-base: true
 
       - name: Make scripts executable
         run: chmod +x ${GITHUB_WORKSPACE}/bin/*.sh
       
       - name: Run pipeline
-        run: nextflow run ${GITHUB_WORKSPACE} -profile test,${{ matrix.profile }} --outdir ./results
+        run: |
+          conda install -c conda-forge libarchive 
+          nextflow run ${GITHUB_WORKSPACE} -profile test,${{ matrix.profile }} --outdir ./results
