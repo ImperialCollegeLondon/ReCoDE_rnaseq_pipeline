@@ -36,12 +36,8 @@ jobs:
 
       - name: Make scripts executable
         run: chmod +x ${GITHUB_WORKSPACE}/bin/*.sh
-
-      - name: Clean conda cache
-        run: |
-          ls ${GITHUB_WORKSPACE}
-          ls /home/runner/work/ReCoDE_rnaseq_pipeline/ReCoDE_rnaseq_pipeline/
-          rm -rf ${GITHUB_WORKSPACE}/work
       
       - name: Run pipeline
-        run: nextflow run ${GITHUB_WORKSPACE} -profile test,${{ matrix.profile }} --outdir ./results
+        run: |
+          conda update conda
+          nextflow run ${GITHUB_WORKSPACE} -profile test,${{ matrix.profile }} --outdir ./results
