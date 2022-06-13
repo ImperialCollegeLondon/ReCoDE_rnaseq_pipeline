@@ -12,6 +12,9 @@ jobs:
       matrix:
         os: [ ubuntu-latest ]  # , windows-latest
         profile: [ docker ]
+        # exclude:
+        #   - os: macos-latest
+        #     profile: docker
 
     runs-on: ${{ matrix.os }}
 
@@ -22,16 +25,23 @@ jobs:
       - name: Checkout pipeline
         uses: actions/checkout@v3
 
-      - name: Install nextflow with conda/mamba
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          update-conda: true
+          environment-file: environment.yml
+          activate-environment: recode_rnaseq
+          conda-channels: bioconda, conda-forge
 
-        env:
-          NXF_VER: "21.10.3"
+      # - name: Install nextflow with conda/mamba
 
-        run: |
-          conda install mamba -c conda-forge
-          $CONDA/bin/activate base
-          mamba env create -f ${GITHUB_WORKSPACE}/environment.yml
-          $CONDA/bin/activate recode_rnaseq
+      #   env:
+      #     NXF_VER: "21.10.3"
+
+      #   run: |
+      #     conda install mamba -c conda-forge
+      #     $CONDA/bin/activate base
+      #     mamba env create -f ${GITHUB_WORKSPACE}/environment.yml
+      #     $CONDA/bin/activate recode_rnaseq
 
       - name: Make scripts executable
         run: |
