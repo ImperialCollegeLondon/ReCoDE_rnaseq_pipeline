@@ -34,13 +34,15 @@ jobs:
           wget -qO- get.nextflow.io | bash
           sudo mv nextflow /usr/local/bin/
 
-      - name: Checkout pipeline
-        uses: actions/checkout@v3
-
       - name: Make scripts executable
         run: chmod +x ${GITHUB_WORKSPACE}/bin/*.sh
       
+      # nextflow fails to install fastqc unless we install it ahead of time
+      - name: Install fastqc
+        run: |          
+          if [ ${{ matrix.profile }} == "conda" ]; then
+            conda install -c bioconda fastqc
+          fi
+
       - name: Run pipeline
-        run: |
-          conda install -c bioconda fastqc
-          nextflow run ${GITHUB_WORKSPACE} -profile test,${{ matrix.profile }} --outdir ./results --conda.createOptions="--"
+        run: nextflow run ${GITHUB_WORKSPACE} -profile test,${{ matrix.profile }} --outdir ./results
