@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest ] # , macos-latest
-        profile: [ docker, conda ]
+        profile: [ conda ]  # docker, 
         exclude:
           - os: macos-latest
             profile: docker
