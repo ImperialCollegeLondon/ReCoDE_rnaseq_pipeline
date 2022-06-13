@@ -39,7 +39,8 @@ jobs:
 
       - name: Clean conda cache
         run: |
-          ls
+          ls ${GITHUB_WORKSPACE}
+          ls /home/runner/work/ReCoDE_rnaseq_pipeline/ReCoDE_rnaseq_pipeline/
           rm -rf ${GITHUB_WORKSPACE}/work
       
       - name: Run pipeline
