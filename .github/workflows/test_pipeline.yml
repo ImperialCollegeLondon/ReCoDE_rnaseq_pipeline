@@ -27,7 +27,7 @@ jobs:
           NXF_VER: "21.10.3"
 
         run: |
-          conda install mamba
+          # conda install mamba -c conda-forge
           mamba env create -f ${GITHUB_WORKSPACE}/environment.yml
           conda activate recode_rnaseq
 
