@@ -10,8 +10,8 @@ jobs:
     # creates a matrix of different os/profile configurations
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-latest ] 
-        profile: [ docker, conda ]
+        os: [ ubuntu-latest ] 
+        profile: [ docker ]
         exclude:
           - os: macos-latest
             profile: docker
@@ -36,16 +36,6 @@ jobs:
 
       - name: Make scripts executable
         run: chmod +x ${GITHUB_WORKSPACE}/bin/*.sh
-      
-      - uses: conda-incubator/setup-miniconda@v2
-        with:
-          update-conda: true
-          use-mamba: true
-          mamba-version: 0.24.0
-          environment-file: environment.yml
-          activate-environment: base
-          auto-activate-base: true
-          conda-channels: bioconda, conda-forge
 
       - name: Run pipeline
         run: nextflow run ${GITHUB_WORKSPACE} -profile test,${{ matrix.profile }} --outdir ./results
