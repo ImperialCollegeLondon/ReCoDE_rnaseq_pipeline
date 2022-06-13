@@ -12,6 +12,12 @@
 # cd to the directory the job was launched from
 cd "$PBS_O_WORKDIR"
 
+# activate conda module on the imperial cluster
+module load anaconda3/personal
+
+# activate conda environment
+source activate recode_rnaseq
+
 # stop running the script if there are errors
 set -e
 

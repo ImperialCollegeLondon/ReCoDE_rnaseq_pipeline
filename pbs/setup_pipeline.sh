@@ -13,6 +13,18 @@ DATA_DIR="data/test"
 # cd to the directory the job was launched from
 cd "$PBS_O_WORKDIR"
 
+# activate conda module on the imperial cluster
+module load anaconda3/personal
+
+# create conda environment if needed
+# conda env remove -n recode_rnaseq
+# conda update conda
+# conda install mamba
+# mamba env create -f environment.yml
+
+# activate conda environment
+source activate recode_rnaseq
+
 # number of cores available
 NUM_CORES=2
 
@@ -50,14 +62,11 @@ create_folder "a_fastqc"
 create_folder "c_trim"
 create_folder "e_star_index"
 
-# load STAR on the cluster
-module load star/2.7.1a
-
 # index the genome using STAR
 bin/star_index.sh \
   "${RES_DIR}/e_star_index" \
   "${DATA_DIR}/genome/GCF_000004515.6_Glycine_max_v4.0_genomic.fna.gz" \
-  "${DATA_DIR}/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf.gz" \
+  "${DATA_DIR}/genome/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf.gz" \
   1 \
   "${NUM_CORES}"
 

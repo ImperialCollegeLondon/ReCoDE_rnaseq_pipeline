@@ -13,6 +13,12 @@ DATA_DIR="data/test"
 # cd to the directory the job was launched from
 cd "$PBS_O_WORKDIR"
 
+# activate conda module on the imperial cluster
+module load anaconda3/personal
+
+# activate conda environment
+source activate recode_rnaseq
+
 # number of cores available
 NUM_CORES=2
 
@@ -28,18 +34,11 @@ s="${SAMPLE_SRR[$PBS_ARRAY_INDEX - 1]}"
 # where to save the pipeline results
 RES_DIR="2_parallelised_pipeline_results"
 
-# load fastqc
-module load fastqc/0.11.9
-
 # run fastqc on raw fastq
 bin/fastqc.sh \
   "${RES_DIR}/a_fastqc" \
   "$DATA_DIR/fastq/${s}.fastq.gz" \
   "${RES_DIR}/a_fastqc/${s}"
-
-# load trimgalore
-module load trim_galore/0.4.1
-module load cutadapt/1.9.1
 
 # trim the fastq files
 bin/trim.sh \
@@ -47,12 +46,8 @@ bin/trim.sh \
   "${DATA_DIR}/fastq/${s}.fastq.gz" \
   "${RES_DIR}/c_trim/${s}"
 
-# load STAR and htseq
-module load star/2.7.1a 
-module load htseq/0.6.1
-
 # perform alignment using STAR, providing the directory of the indexed genome
-bin/align_and_count.sh \
+bin/align.sh \
   "${RES_DIR}/e_star_index" \
   "${RES_DIR}/c_trim/${s}_trimmed.fq.gz" \
   "${RES_DIR}/f_align/${s}" \
