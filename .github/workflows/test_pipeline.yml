@@ -22,15 +22,14 @@ jobs:
       - name: Checkout pipeline
         uses: actions/checkout@v3
 
-      - name: Install nextflow
+      - name: Install nextflow with conda/mamba
 
         env:
           NXF_VER: "21.10.3"
 
         run: |
           conda install mamba -c conda-forge
-          conda init bash
-          conda activate
+          $CONDA/bin/activate
           mamba env create -f ${GITHUB_WORKSPACE}/environment.yml
           conda activate recode_rnaseq
 
