@@ -61,3 +61,7 @@ multiqc.sh.o*
 # Ignore nextflow outputs
 *.nextflow*
 work/
+
+# cluster logs
+*.sh.e*
+*.sh.o*
