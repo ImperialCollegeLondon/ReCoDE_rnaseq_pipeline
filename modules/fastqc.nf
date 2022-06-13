@@ -7,7 +7,7 @@ process FASTQC {
 
     // use a custom container rather than biocontainers
     // container "quay.io/biocontainers/fastqc:0.11.9--0"
-    container "jackgisby/fastqc"
+    container "jackgisby/fastqc:v1"
 
     input:
     tuple val(accession), path(fastq)

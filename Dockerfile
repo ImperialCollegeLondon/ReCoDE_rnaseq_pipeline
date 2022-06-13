@@ -1,6 +1,3 @@
-# docker build -t jackgisby/fastqc .
-# docker push jackgisby/fastqc
-
 # get base image from biocontainers
 FROM biocontainers/biocontainers:v1.1.0_cv2
 
@@ -20,3 +17,6 @@ RUN ln -s /opt/fastqc/fastqc /usr/local/bin/fastqc
 
 # add programs to path
 ENV PATH /usr/local/bin:$PATH
+
+RUN adduser --system --no-create-home nonroot
+USER nonroot
