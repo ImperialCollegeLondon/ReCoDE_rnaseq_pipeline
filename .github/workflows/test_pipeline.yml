@@ -36,6 +36,9 @@ jobs:
 
       - name: Make scripts executable
         run: chmod +x ${GITHUB_WORKSPACE}/bin/*.sh
+
+      - name: Clean conda cache
+        run: conda clean -a
       
       - name: Run pipeline
         run: nextflow run ${GITHUB_WORKSPACE} -profile test,${{ matrix.profile }} --outdir ./results
