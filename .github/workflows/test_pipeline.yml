@@ -10,7 +10,7 @@ jobs:
     # creates a matrix of different os/profile configurations
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-latest ] 
+        os: [ ubuntu-latest ] # , macos-latest
         profile: [ docker, conda ]
         exclude:
           - os: macos-latest
@@ -46,4 +46,3 @@ jobs:
         run: |
           conda update conda
           nextflow run ${GITHUB_WORKSPACE} -profile test,${{ matrix.profile }} --outdir ./results
-
