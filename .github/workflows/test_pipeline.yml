@@ -10,7 +10,7 @@ jobs:
     # creates a matrix of different os/profile configurations
     strategy:
       matrix:
-        os: [ ubuntu-latest ]  # , windows-latest
+        os: [ ubuntu-latest, windows-latest ]  # 
         profile: [ docker, conda ]
         # exclude:
         #   - os: macos-latest
@@ -35,23 +35,10 @@ jobs:
           auto-activate-base: false
           conda-channels: bioconda, conda-forge
 
-      # - name: Install nextflow with conda/mamba
-
-      #   env:
-      #     NXF_VER: "21.10.3"
-
-      #   run: |
-      #     conda install mamba -c conda-forge
-      #     $CONDA/bin/activate base
-      #     mamba env create -f ${GITHUB_WORKSPACE}/environment.yml
-      #     $CONDA/bin/activate recode_rnaseq
-
       - name: Make scripts executable
         run: |
           chmod +x ${GITHUB_WORKSPACE}/bin/*.sh
       
       - name: Run pipeline
         shell: bash -l {0}
-        run: |
-          conda info
-          nextflow run ${GITHUB_WORKSPACE} -profile test,${{ matrix.profile }} --outdir ./results
+        run: nextflow run ${GITHUB_WORKSPACE} -profile test,${{ matrix.profile }} --outdir ./results
