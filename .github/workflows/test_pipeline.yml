@@ -37,11 +37,11 @@ jobs:
       - name: Make scripts executable
         run: chmod +x ${GITHUB_WORKSPACE}/bin/*.sh
       
-      # nextflow fails to install fastqc unless we install it ahead of time
-      - name: Install fastqc
+      # nextflow fails to install the packages unless we install it ahead of time
+      - name: Conda install
         run: |          
           if [ ${{ matrix.profile }} == "conda" ]; then
-            conda install -c bioconda fastqc
+            conda env create -f ${GITHUB_WORKSPACE}/environment.yml
           fi
 
       - name: Run pipeline
