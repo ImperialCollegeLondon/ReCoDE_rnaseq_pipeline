@@ -28,7 +28,7 @@ jobs:
       - name: Install nextflow
 
         env:
-          NXF_VER: "21.10.3"
+          NXF_VER: 21.10.3
 
         run: |
           wget -qO- get.nextflow.io | bash
@@ -37,12 +37,15 @@ jobs:
       - name: Make scripts executable
         run: chmod +x ${GITHUB_WORKSPACE}/bin/*.sh
       
-      # nextflow fails to install the packages unless we install it ahead of time
-      - name: Conda install
-        run: |          
-          if [ ${{ matrix.profile }} == "conda" ]; then
-            conda env create -f ${GITHUB_WORKSPACE}/environment.yml
-          fi
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          update-conda: true
+          use-mamba: true
+          mamba-version: 0.24.0
+          environment-file: environment.yml
+          activate-environment: recode_rnaseq
+          auto-activate-base: false
+          conda-channels: bioconda, conda-forge
 
       - name: Run pipeline
         run: nextflow run ${GITHUB_WORKSPACE} -profile test,${{ matrix.profile }} --outdir ./results
