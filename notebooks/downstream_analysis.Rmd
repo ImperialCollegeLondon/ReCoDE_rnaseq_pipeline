@@ -6,8 +6,8 @@ output:
   github_document:
     toc: true
     toc_depth: 2
-    fig_width: 10
-    fig_height: 14
+    fig_width: 8
+    fig_height: 10
 ---
 
 ```{r setup, include = FALSE}
@@ -306,7 +306,7 @@ dge <- estimateDisp(dge)
 et <- exactTest(dge)
 
 # get the results as a table
-res <- topTags(et)
+res <- topTags(et, n=60000)
 
 # print the most significant results in the table
 print(head(res))
