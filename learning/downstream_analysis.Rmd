@@ -18,7 +18,7 @@ library(edgeR)  # https://bioconductor.org/packages/release/bioc/html/edgeR.html
 library(SummarizedExperiment)  # https://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html
 
 # package for plotting PCA
-library(ggplot2)  # 
+library(ggplot2)  # https://ggplot2.tidyverse.org/
 
 # package for making volcano plots
 library(EnhancedVolcano)  # https://bioconductor.org/packages/release/bioc/html/EnhancedVolcano.html
