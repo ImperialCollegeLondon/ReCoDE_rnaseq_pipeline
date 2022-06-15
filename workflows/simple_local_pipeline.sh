@@ -28,7 +28,7 @@ readarray -t SAMPLE_SRR < data/files.txt
 RES_DIR="1_simple_local_pipeline_results"
 
 # number of cores available
-NUM_CORES=6
+NUM_CORES=1
 
 # make the top level results folder
 if [ -e  "${RES_DIR}" ]; then
@@ -89,7 +89,7 @@ bin/star_index.sh \
   3 \
   "${NUM_CORES}"
 
-# remove unzipped fasta
+# remove unzipped fasta as it is no longer needed
 rm "${RES_DIR}/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.fna"
 
 create_folder "f_align"
@@ -104,7 +104,7 @@ for s in "${SAMPLE_SRR[@]}"; do
     "${RES_DIR}/f_align/${s}" \
     "${NUM_CORES}"
 
-  # remove unzipped fastq
+  # remove unzipped fastq as it is no longer needed
   rm "${RES_DIR}/f_align/${s}.fastq"
 
   bin/count.sh \
@@ -120,7 +120,7 @@ for s in "${SAMPLE_SRR[@]}"; do
   fi
 done
 
-# remove unzipped gtf
+# remove unzipped gtf as it is no longer needed
 rm "${RES_DIR}/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf"
 
 # use multiqc to assess the alignment and counts
