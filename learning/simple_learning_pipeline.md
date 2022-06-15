@@ -28,7 +28,12 @@ If you are interested in learning more about RNA-seq and other methods for measu
 
 ## Setting up our environment
 
-Before we start attempting to process the RNA-seq data, we need to install the relevant tools. The packages we need are listed in the file `environment.yml`. The easiest way to do this is to [install conda](https://docs.conda.io/en/latest/miniconda.html), then run the following code from the command line:
+Before we start attempting to process the RNA-seq data, we need to download this repository and install the relevant tools. You can get this repository by installing [Git](https://github.com/git-guides/install-git) and cloning this repository from the command line, using the following code:
+```
+git clone https://github.com/ImperialCollegeLondon/ReCoDE_rnaseq_pipeline.git
+```
+
+The packages we need are listed in the file `environment.yml`. The easiest way to get them is to [install conda](https://docs.conda.io/en/latest/miniconda.html), then run the following code from the command line:
 
 ```
 conda env create -f environment.yml
