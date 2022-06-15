@@ -28,6 +28,8 @@ We will write scripts, using bash and the R programming language, that can execu
 
 ![A flow diagram outlining the RNA-seq analysis workflow](assets/flow.png?raw=true "An overview of RNA sequencing, data preprocessing and downstream analysis.")
 
+## Tools used
+
 While there are many tutorials that discuss the processing of RNA-seq data, this exemplar will focus on: i) the parallelisation of bioinformatics tools on computing clusters, such as the Imperial RCS; ii) the development of a reproducible pipeline, introducing methods and tools that can help with this, including:
 - [Nextflow](https://www.nextflow.io/), a workflow management system that makes it easy to develop data-driven pipelines.
 - [Conda](https://docs.conda.io/en/latest/), an package management system that allows you to share your local environment with others.
