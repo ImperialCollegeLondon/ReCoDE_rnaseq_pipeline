@@ -66,7 +66,7 @@ conda env create -f environment.yml
 conda activate recode_rnaseq
 ```
 
-This conda environment also contains Nextflow, which we will be using to create the final iteration of the data processing pipeline. To run the nextflow pipeline, you will need either Docker or Conda installed. 
+This conda environment also contains Nextflow, which we will be using to create the final iteration of the data processing pipeline. To run the nextflow pipeline, you will also need either Docker or Conda installed. 
 
 The scripts in this repository are designed for use with the Imperial computing cluster. If you do not have access to the cluster, you might be able to adapt the code to your own cluster's configuration. Alternatively, the primary pipeline uses nextflow, which is adaptable to many different platforms. You could run the nextflow pipeline on your local computer, or configure it to run on another cluster or even the cloud.
 
