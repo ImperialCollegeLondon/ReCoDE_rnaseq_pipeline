@@ -4,7 +4,7 @@ Parallelised pipeline
 
 # Computing clusters
 
-Often, as is often the case with RNA-seq data, we need more computing power than is available on a typical laptop. RNA-seq data can take an extremely long time to process on a single machine. Furthermore, lots of memory (RAM) is required for running alignment tools. You might also find that you just don't have enough space to store a large dataset on your computer! 
+Often, as is often the case with our RNA-seq data, we need more computing power than is available on a typical laptop. RNA-seq data can take an extremely long time to process on a single machine. Furthermore, lots of memory (RAM) is required for running alignment tools. You might also find that you just don't have enough space to store a large dataset on your computer! 
 
 For this reason, many universities have computing clusters that can help overcome these issues. Computing clusters are a set of computers that are linked together by a network so that they can work together. Each of the computers in the cluster is referred to as a node. These clusters are usually set up with some sort of job scheduler, which allows researchers to submit code to run as a "job"; the scheduler will find a slot on one or more of the nodes on which the code can be run. The Imperial computing cluster uses the Portable Batch System (PBS) as a scheduler. 
 
