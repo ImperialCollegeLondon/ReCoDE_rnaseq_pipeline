@@ -17,7 +17,6 @@ cd "$PBS_O_WORKDIR"
 module load anaconda3/personal
 
 # create conda environment if needed
-# conda env remove -n recode_rnaseq
 # conda update conda
 # conda install mamba
 # mamba env create -f environment.yml
