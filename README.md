@@ -39,7 +39,7 @@ While there are many tutorials that discuss the processing of RNA-seq data, this
 
 ## Quick start
 
-To get started using the pipeline, install [Nextflow](https://www.nextflow.io/docs/latest/getstarted.html) and either of [Docker](https://www.docker.com/), [Singularity](https://sylabs.io/docs) or [Conda](https://docs.conda.io/en/latest/). Then, the following command can be used to run the pipeline using a small test dataset:
+To get started using the pipeline, install [Nextflow](https://www.nextflow.io/docs/latest/getstarted.html) and either of [Docker](https://www.docker.com/), [Singularity](https://sylabs.io/docs) or [Conda](https://docs.conda.io/en/latest/). Then, the following command can be used to run the pipeline locally using a small test dataset:
 
 ```
 nextflow run -r main ImperialCollegeLondon/ReCoDE_rnaseq_pipeline -profile test,docker
