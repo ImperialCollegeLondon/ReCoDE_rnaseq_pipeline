@@ -42,7 +42,7 @@ While there are many tutorials that discuss the processing of RNA-seq data, this
 To get started using the pipeline, install [Nextflow](https://www.nextflow.io/docs/latest/getstarted.html) and either of [Docker](https://www.docker.com/), [Singularity](https://sylabs.io/docs) or [Conda](https://docs.conda.io/en/latest/). Then, the following command can be used to run the pipeline using a small test dataset:
 
 ```
-nextflow run ImperialCollegeLondon/ReCoDE_rnaseq_pipeline -profile test,docker
+nextflow run -r main ImperialCollegeLondon/ReCoDE_rnaseq_pipeline -profile test,docker
 ```
 
 Note that this pipeline is not designed to handle all types of RNA-seq data (e.g. it was not designed for paired-read data). If you have large amounts of RNA-seq data to process, we recommend using the [nextflow-core RNA-seq pipeline](https://github.com/nf-core/rnaseq).
