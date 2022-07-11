@@ -14,7 +14,7 @@ analysis on raw RNA-seq counts. These counts were produced by the data
 processing pipeline developed in this repository applied to RNA-seq
 reads measured from soybean plants grown at ambient or elevated ozone
 levels. If you want to learn more about the preprocessing pipeline, see
-the documents describing its development in the `learning/` directory.
+the documents describing its development in the `docs/` directory.
 
 The raw counts files are a lot smaller than the original reads (that
 were stored in fasta files). They are small enough that we can read the
