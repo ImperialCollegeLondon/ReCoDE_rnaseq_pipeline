@@ -107,6 +107,7 @@ for s in "${SAMPLE_SRR[@]}"; do
   # remove unzipped fastq as it is no longer needed
   rm "${RES_DIR}/f_align/${s}.fastq"
 
+  # now perform the counting using htseq-count
   bin/count.sh \
     "${RES_DIR}/f_align/${s}Aligned.sortedByCoord.out.bam" \
     "${RES_DIR}/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf" \
