@@ -90,7 +90,7 @@ Each of the bash scripts in `bin/` follow a common format. The first line contai
 bin/fastqc.sh "a" "b" "c"
 ```
 
-The string `"a"` will be accessible within the script through the variable `$1`, `"b"` will be accessible through the variable `$2`, and so on. We can run the script multiple times, and each time we can change the arguments to the script so it runs for each of our input samples. 
+The string `"a"` will be accessible within the script through the variable `$1`, `"b"` will be accessible through the variable `$2`, and so on. We can run the script multiple times, and each time we can change the arguments to the script so it runs for each of our input samples. `"c"` represents a directory that `fastqc` can save temporary files to.
 
 If we were to run FastQC for one of the soybean samples, the program would generate a convenient `.html` report for us that creates plots describing various quality control metrics. A screenshot of one of the reports is shown below. The summary on the left lists each of the quality control metrics and uses a traffic light system to indicate issues. Not all of the metrics are relevant for our analysis; if you want to understand each metric, there is documentation available online for the FastQC program that explains them. 
 
