@@ -118,7 +118,9 @@ The key parts of this process definition include:
 
  - **input** - The inputs are the files that are going to be used as input to this process. In this case we want to process a `.fastq` file, so we specify that we expect a path as input, and we name this "fastq".
 
- - **output** - The outputs are the files that we expect our program is going to generate. We don't need to specify all of the program's outputs, just the ones that we want to keep. In this case, we want to capture the files that end in "_fastqc.html" and those that end in "_fastqc.zip". These represent the FastQC report that we will later pass to MultiQC in order to view the QC metrics for our `.fastq` files. We use `emit:` to name the outputs to make accessing them easier later. We use the "*" symbol as a wildcard, meaning this symbol can match anything. This means the 
+ - **output** - The outputs are the files that we expect our program is going to generate. We don't need to specify all of the program's outputs, just the ones that we want to keep. In this case, we want to capture the files that end in "_fastqc.html" and those that end in "_fastqc.zip"; we achieve this using the wildcard character, "*". These files represent the FastQC report that we will later pass to MultiQC in order to view the QC metrics for our `.fastq` files. We use `emit:` to name the outputs to make accessing them later easier. 
+ 
+ The "*" wildcard symbol is used, which will match any text. 
 
  - **script** - The script contains one or more commands to be run as part of the process. This is like a bash script, and it can access the variables we defined above in the process. For instance, we use the `fastq` variable to access the location of the `.fastq` file that needs to be processed. This script will run `fastqc` on this `.fastq` file and save the results to the working directory. 
 
