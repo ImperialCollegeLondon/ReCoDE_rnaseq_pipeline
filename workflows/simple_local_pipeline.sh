@@ -90,7 +90,7 @@ bin/star_index.sh \
   "${NUM_CORES}"
 
 # remove unzipped fasta as it is no longer needed
-rm "${RES_DIR}/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.fna"
+rm "${RES_DIR}/e_star_index/genome.fna"
 
 create_folder "f_align"
 create_folder "g_count"
@@ -110,7 +110,7 @@ for s in "${SAMPLE_SRR[@]}"; do
   # now perform the counting using htseq-count
   bin/count.sh \
     "${RES_DIR}/f_align/${s}Aligned.sortedByCoord.out.bam" \
-    "${RES_DIR}/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf" \
+    "${RES_DIR}/e_star_index/annotation.gtf" \
     "${RES_DIR}/g_count/${s}"
 
   # check the counts have been successfully created
@@ -122,7 +122,7 @@ for s in "${SAMPLE_SRR[@]}"; do
 done
 
 # remove unzipped gtf as it is no longer needed
-rm "${RES_DIR}/e_star_index/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf"
+rm "${RES_DIR}/e_star_index/annotation.gtf"
 
 # use multiqc to assess the alignment and counts
 bin/multiqc.sh \
