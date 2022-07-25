@@ -50,39 +50,40 @@ Tools used achieve this as part of the exemplar include:
 
 In this exemplar, we set up three versions of the same pipeline, that process RNA sequencing data. They are available in [docs](https://github.com/ImperialCollegeLondon/ReCoDE_rnaseq_pipeline/tree/main/docs/), along with the background information necessary to follow each pipeline. Each of these pipeline generates .count files in their final step, which counts how many RNA sequences map to each gene for each sample. We created multiple versions of the pipeline to show the different ways in which researchers might want to process their data. They are as follows:
 
-- [simple_pipeline](https://github.com/ImperialCollegeLondon/ReCoDE_rnaseq_pipeline/tree/main/docs/simple_local_pipeline.md): This is the simplest version of the pipeline. It is a bash script that can be run straight from the command line. It will execute each stage of the pipeline in sequentially. 
+1. [simple_pipeline](https://github.com/ImperialCollegeLondon/ReCoDE_rnaseq_pipeline/tree/main/docs/simple_local_pipeline.md): This is the simplest version of the pipeline. It is a bash script that can be run straight from the command line. It will execute each stage of the pipeline in sequentially. 
 
-Pros:
+    Pros:
 
-* Simple to follow and execute
+    * Simple to follow and execute
 
-Cons:
+    Cons:
 
-* slow for a large number of samples
-* if there is an error for a single sample the entire pipeline will fail
-
-- [parallelised_pipeline](https://github.com/ImperialCollegeLondon/ReCoDE_rnaseq_pipeline/tree/main/docs/parallelised_pipeline.md): This builds on the simple pipeline to run the pipeline on the cluster. It still uses bash scripts to orchestrate the pipeline, however it also allows each sample to be run in parallel on the cluster. This version of the pipeline is therefore a lot faster!
-
-Pros:
-
-* a lot faster than simple_pipeline
-
-Cons:
-
-* unwieldy to use for large numbers of samples
+    * slow for a large number of samples
+    * if there is an error for a single sample the entire pipeline will fail
 
 
-- [nextflow_pipeline](https://github.com/ImperialCollegeLondon/ReCoDE_rnaseq_pipeline/tree/main/docs/nextflow_pipeline.md): This is the most advanced version of the pipeline. Instead of relying on bash scripts, that could fail without warning, it uses the nextflow workflow manager to run the pipeline stages either on your local computer or on a computing cluster. 
+2. [parallelised_pipeline](https://github.com/ImperialCollegeLondon/ReCoDE_rnaseq_pipeline/tree/main/docs/parallelised_pipeline.md): This builds on the simple pipeline to run the pipeline on the cluster. It still uses bash scripts to orchestrate the pipeline, however it also allows each sample to be run in parallel on the cluster. This version of the pipeline is therefore a lot faster!
 
-Pros:
+    Pros:
 
-* automatically orchestrate the running of large numbers of samples
-* run seamlessly both locally, on computing clusters and on cloud platforms
-* easily shared with others
+    * a lot faster than simple_pipeline
 
-Cons:
+    Cons:
 
-* takes more time to set up than the simple or parallelised pipeline 
+    * unwieldy to use for large numbers of samples    
+
+
+3. [nextflow_pipeline](https://github.com/ImperialCollegeLondon/ReCoDE_rnaseq_pipeline/tree/main/docs/nextflow_pipeline.md): This is the most advanced version of the pipeline. Instead of relying on bash scripts, that could fail without warning, it uses the nextflow workflow manager to run the pipeline stages either on your local computer or on a computing cluster. 
+
+    Pros:
+
+    * automatically orchestrate the running of large numbers of samples
+    * run seamlessly both locally, on computing clusters and on cloud platforms
+    * easily shared with others
+
+    Cons:
+
+    * takes more time to set up than the simple or parallelised pipeline 
 
 We created markdown documents, available in this directory, for each of these pipelines. These documents explain the pipelines and link to external resources in case you want to learn more. We suggest you go through the documentation in the order above, as each one builds upon the last.
 
