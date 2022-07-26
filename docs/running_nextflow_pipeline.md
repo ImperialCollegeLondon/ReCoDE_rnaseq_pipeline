@@ -1,46 +1,6 @@
-nextflow pipeline
-=================
+# Running the nextflow pipeline 
 
-# What is nextflow?
-
-nextflow is a workflow management system that allows users to orchestrate the running of scripts into a single cohesive pipeline. nextflow pipelines allow reproducibility and can be easily shared and used by others. nextflow is a DSL (domain specific language) with simple methods for combining scripts into fully-fledged pipelines. For detailed information, see [the nextflow site](https://www.nextflow.io/). 
-
-In this document we will discuss features of nextflow that are useful for coordinating our simple RNA-seq pipeline, but these explanations will be brief and will only scratch the surface of what nextflow can do. We will explain the main concepts alongside the building of our simple RNA-seq pipeline. If you want a more in-depth explanation of writing nextflow code, you can read the [nextflow documentation](https://www.nextflow.io/docs/latest/index.html) or look for more detailed guides.
-
-![Example nextflow code](https://www.nextflow.io/img/home-dsl2.png "Example nextflow code, available from https://www.nextflow.io/.")
-
-nextflow can integrate lots of different types of scripts, including those written in bash, Python and R. So, you aren't required to fully learn a new language in order to create nextflow pipelines, you can instead reuse existing scripts and workflows. Our previous pipelines both made use of the same scripts in the `bin/` directory, but they used them in slightly different ways. In this document we will use these same scripts, but we will orchestrate them using nextflow.
-
-When we wrote the simple local pipeline and the parallelised pipeline, we had to modify the scripts in order to make them compatible with the Imperial cluster. If we were to send this pipeline to a researcher at another university, they might have some difficulty adapting it. nextflow is aware of common cluster schedulers, like PBS and slurm, so it can worry about queueing jobs on the cluster for us! We can write code that runs on our local computer, then export it to a computing cluster to do the heavy lifting without changing anything about the pipeline itself. This is possible because we can give nextflow a config file specifying how it can interact with our specific computing cluster. Many institutions have [pre-built config files](https://github.com/nf-core/configs), so you may not even need to write your own!
-
-For our pipeline, we are largely motivated to use nextflow because: i) we don't want to have to worry about setting up our scripts as jobs on the cluster, like we did in `docs/parallelised_pipeline.md`; ii) setting up our pipeline with nextflow will make it easier for others to run it, especially if they use a different computing cluster; iii) nextflow will make sure each processing stage produces the expected outputs, and make it far easier to identify the source of the problem. 
-
-# Environment management
-
-We will also see that nextflow makes it easier to work with environment managers like conda. We have already been working with conda, so hopefully you have picked up the basics. conda lets us create isolated environments that include the packages we need and their dependencies. conda lets us more easily share our code with others, because we can share our code alongside a list of software packages that are required. The easiest way to do this is with an `environment.yml` file, like the one we have created for this exemplar:
-```
-name: recode_rnaseq
-channels:
-  - bioconda
-  - conda-forge
-dependencies:
-  - star=2.7.10a
-  - fastqc=0.11.9
-  - htseq=0.11.3
-  - multiqc=1.12
-  - trim-galore=0.6.7
-  - sra-tools=2.11.0
-  - nextflow=22.04.0
-  - samtools=1.6
-```
-
-If we run the code `conda create env -f environment.yml`, like we did at the start of this project, it creates an environment with the name "recode_rnaseq". To create this environment, conda installs all the packages listed as dependencies and makes sure that all of the package versions are compatible with each other. conda knows where these packages are located because we supply the channels `bioconda`, a repository of bioinformatics software packages, and `conda-forge`, another repository for open source packages.
-
-conda has some limitations though. In our case, we want to create a reproducible pipeline that can be run easily by anyone. For instance, we might find that less common packages are not available on conda. Or, we might find that the packages we want are only available on certain operating systems; STAR, for instance, cannot run on Windows. We can avoid some of these limitations with docker, that is also well-integrated with nextflow. 
-
-conda allows us to install a set of packages into an environment that is essentially overlaid on top of our current environment. When you activate a conda environment, you still have access to programs that you installed separately to conda. Therefore, when you run code using conda, your environment is not entirely isolated from your host system. docker, on the other hand, allows you to work with containers. Containers are similar to conda environments in the sense that they contain the software and dependencies that you need to run your code. They are different, though, because containers are entirely isolated from your host system. This can make them more consistent, because users will get the same results regardless of their environment or operating system. 
-
-## Using containers
+## Set Up
 
 Previously, we created a single conda environment in which we installed all of the packages we needed to run the pipeline. For the nextflow pipeline, we will instead create an environment for each step of the pipeline. By this, we mean that we will separate each step (QC, trimming, indexing, alignment, counting, multiqc) and use an environment that contains only the package we need. For instance, in the QC step we will create an environment that contains only FastQC and its dependencies. Using different environments for each step is useful as the project gets bigger, so that we don't have to create huge and complex conda environments. 
 
@@ -89,13 +49,13 @@ To use our docker container, we first have to build it as an image. To do this, 
 
 This way, you can use my docker image or edit the pipeline to use the image you have created. Usually our next step would be to demonstrate how to access and use the docker image directly, but nextflow will take care of this for us, as we will demonstrate in the following sections. If you want to use docker in your other work, it may be useful to read the [docker documentation](https://docs.docker.com/) or a specific course on docker.
 
-# Running the nextflow pipeline
+## Running the nextflow pipeline
 
 We can now start building our nextflow pipeline. We will create a module for each of our processing steps in `bin/` and connect them together into a cohesive nextflow pipeline. We will allow users to use either docker or conda to run the pipeline. We will test the pipeline locally before running it on the cluster for the full dataset. Finally, we will look at how we can set up GitHub actions to test the pipeline every time we make a change. 
 
 We will go over the main features of our workflow, but we will not spend much time providing background to nextflow. It may be useful to consult other resources, like the [nextflow documentation](https://www.nextflow.io/docs/latest/index.html), to find out more details or clarify how elements of the pipeline work.
 
-## Building the pipeline processes
+### Building the pipeline processes
 
 The first step in creating our pipeline will be to create a nextflow `process` to run each of the steps in `bin/`. We will create these in the `modules/` directory. For instance, a minimal process for running FastQC on a `.fastq` file might look like this:
 ```
@@ -176,7 +136,7 @@ We have created similar processes in the `modules/` directory for each of our pi
 
 Next we will move on to specifying the sequence of the analysis, so it might be worthwhile to look at the other processes and try and understand what is going on. You should be able to match up the inputs and outputs to the files we generated for the previous pipelines. 
 
-## Putting the pipeline together
+### Putting the pipeline together
 
 We will now create a script, `workflows/nextflow_pipeline.nf`, to create a cohesive workflow. This will simply join the processes we have created into a single script. With nextflow, we don't explicitly state the order tasks should be run. We simply define how the data flows between each of our processes, and nextflow will decide on the running order and will run steps in parallel where necessary!
 
@@ -282,7 +242,7 @@ If you have been using the cluster to run everything so far, you could instead u
 
 The `main.nf` file located in the top-level directory of the exemplar tells nextflow how to run the pipeline. It simply runs the `PROCESS_RNASEQ` workflow we discussed in this section. Next, we will discuss the config files that are used to configure the pipeline (including defining variables such as `params`) before trying to run the pipeline on the cluster!
 
-## Config files
+### Config files
 
 So far, we have glossed over variables such as `param` that define how our pipeline runs. nextflow pipelines can be configured in a few different ways, including by passing variables via the command line. We will focus on the use of config files to define the behaviour of the pipeline. The main configuration file can be found in the top-level directory by the name of `nextflow.config`. In this file, we define default parameters for all of our `params` and set up the "profiles" like "test" and "docker".
 
@@ -319,7 +279,7 @@ In `nextflow.config` we also created a profile called "test". In the previous se
 
 In the next section, we will get the pipeline running on the cluster for the full dataset. To do this, we will use the "imperial_rcs" profile, which configures nextflow to communicate with the PBS scheduler.
 
-## Running the pipeline on the computing cluster
+### Running the pipeline on the computing cluster
 
 Finally, we are almost read to run the full nextflow pipeline on a proper RNA-seq dataset! In this section, we will assume that you have downloaded the dataset on the cluster, as per the instructions in `docs/parallelised_pipeline.md` or `data/README.md`. Running the pipeline will lead to the generation of results into your home directory, unless you specify otherwise. The intermediate files produced by nextflow (i.e. the `work/` directory) will be stored in the temporary Ephemeral space. We will also assume that you set up the `recode_rnaseq` conda environment for the parallelised pipeline. 
 
@@ -346,7 +306,7 @@ We give the coordinator job 4 cores and 16GB, so that nextflow can be run at the
 
 Finally, the pipeline is run to completion. If you have problems running the pipeline, you could try running the test dataset instead to work out what the problem is. Failing this, you could submit the problem as [an issue](https://github.com/ImperialCollegeLondon/ReCoDE_rnaseq_pipeline/issues).
 
-## Continous integration
+### Continous integration
 
 Previously, we tested the pipeline locally before we ran it for the full dataset on the computing cluster. Testing is a great way to ensure that you don't inadvertently break something when you update your code. To take testing another step further, we can set up our tests to run automatically every time we make updates to our code; this practice is known as continous integration. 
 
@@ -371,7 +331,7 @@ This parameter matrix creates a variable called `matrix` that contains the varia
 
 You can go to [the actions tab on GitHub](https://github.com/ImperialCollegeLondon/ReCoDE_rnaseq_pipeline/actions) to view the runs that have been carried out for each repository push. If you scroll down far enough, you might find runs that failed when the pipeline and tests were incomplete! In this exemplar, we created only a simple workflow for doing a full pipeline test. For more complex pipelines, this may not be sufficient. When pipelines grow, it might be necessary to include separate tests for each segment of the pipeline. This is referred to as unit testing. 
 
-# Limitations
+## Limitations
 
 The pipeline is much improved since our first iteration! We can now run the pipeline on the computing cluster, and we can run the processing for each sample in parallel. Furthermore, using nextflow made the pipeline far more robust, because nextflow will handle the submission and tracking of cluster jobs and it will check that all of the expected outputs are created. 
 
