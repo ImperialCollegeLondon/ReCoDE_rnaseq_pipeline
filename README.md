@@ -2,13 +2,13 @@
 RNA-seq Analysis
 ================
 
-### Author: Jack Gisby
-
 <!-- buttons -->
 [![actions status](https://github.com/ImperialCollegeLondon/ReCoDE_rnaseq_pipeline/workflows/Pipeline%20CI/badge.svg)](https://github.com/ImperialCollegeLondon/ReCoDE_rnaseq_pipeline/actions)
 [![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?logo=anaconda)](https://docs.conda.io/en/latest/)
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?logo=docker)](https://www.docker.com/)
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg)](https://sylabs.io/docs/)
+
+### Author: Jack Gisby
 
 ## Description
 
