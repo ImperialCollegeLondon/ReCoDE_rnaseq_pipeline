@@ -67,6 +67,7 @@ jobs:
             chmod +x ${GITHUB_WORKSPACE}/workflows/simple_local_pipeline.sh
       
       - name: Run pipeline
+        shell: bash -l {0}
         run: ${GITHUB_WORKSPACE}/workflows/simple_local_pipeline.sh
         
 #   docker:
