@@ -59,6 +59,7 @@ jobs:
           activate-environment: recode_rnaseq
           environment-file: environment.yml
           use-mamba: true
+          mamba-version: "*"
           
       - name: Make scripts executable
         run: chmod +x ${GITHUB_WORKSPACE}/bin/*.sh
