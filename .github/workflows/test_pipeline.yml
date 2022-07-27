@@ -4,13 +4,44 @@ name: Pipeline CI
 on: [push, pull_request]
 
 jobs:
-  run_pipeline:
-    name: Run pipeline with test data
+#   run_pipeline:
+#     name: Run pipeline with test data
+
+#     strategy:
+#       matrix:
+#         os: [ ubuntu-latest ]
+#         profile: [ docker ]
+
+#     runs-on: ${{ matrix.os }}
+
+#     env:
+#       OS: ${{ matrix.os }}
+
+#     steps:
+#       - name: Checkout pipeline
+#         uses: actions/checkout@v3
+
+#       - name: Install nextflow
+
+#         env:
+#           NXF_VER: 21.10.3
+
+#         run: |
+#           wget -qO- get.nextflow.io | bash
+#           sudo mv nextflow /usr/local/bin/
+
+#       - name: Make scripts executable
+#         run: chmod +x ${GITHUB_WORKSPACE}/bin/*.sh
+      
+#       - name: Run pipeline
+#         run: nextflow run ${GITHUB_WORKSPACE} -profile test,${{ matrix.profile }} --outdir ./results
+        
+  simple_script:
+    name: Run the simple pipeline script
 
     strategy:
       matrix:
-        os: [ ubuntu-latest ]
-        profile: [ docker ]
+        os: [ ubuntu-latest, macos-latest ]
 
     runs-on: ${{ matrix.os }}
 
@@ -20,41 +51,39 @@ jobs:
     steps:
       - name: Checkout pipeline
         uses: actions/checkout@v3
-
-      - name: Install nextflow
-
-        env:
-          NXF_VER: 21.10.3
-
-        run: |
-          wget -qO- get.nextflow.io | bash
-          sudo mv nextflow /usr/local/bin/
-
+        
+      - name: Setup conda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: true
+          activate-environment: recode_rnaseq
+          environment-file: environment.yml
+          
       - name: Make scripts executable
         run: chmod +x ${GITHUB_WORKSPACE}/bin/*.sh
       
       - name: Run pipeline
-        run: nextflow run ${GITHUB_WORKSPACE} -profile test,${{ matrix.profile }} --outdir ./results
+        run: workflows/simple_local_pipeline.sh
+        
+#   docker:
+#     name: Push FastQC image to DockerHub
+#     runs-on: ubuntu-latest
 
-  docker:
-    name: Push FastQC image to DockerHub
-    runs-on: ubuntu-latest
+#     steps:
+#       - name: Set up emulator
+#         uses: docker/setup-qemu-action@v2
 
-    steps:
-      - name: Set up emulator
-        uses: docker/setup-qemu-action@v2
+#       - name: Set up Docker Buildx
+#         uses: docker/setup-buildx-action@v2
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+#       - name: Login to DockerHub
+#         uses: docker/login-action@v2
+#         with:
+#           username: ${{ secrets.DOCKERHUB_USERNAME }}
+#           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Login to DockerHub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build and push to DockerHub
-        uses: docker/build-push-action@v3
-        with:
-          push: true
-          tags: jackgisby/fastqc:latest
+#       - name: Build and push to DockerHub
+#         uses: docker/build-push-action@v3
+#         with:
+#           push: true
+#           tags: jackgisby/fastqc:latest
