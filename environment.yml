@@ -2,7 +2,10 @@ name: recode_rnaseq
 channels:
   - bioconda
   - conda-forge
+  - defaults
 dependencies:
+  - samtools=1.9
+  - openssl=1.0
   - star=2.7.10a
   - fastqc=0.11.9
   - htseq=0.11.3
@@ -10,5 +13,3 @@ dependencies:
   - trim-galore=0.6.7
   - sra-tools=2.11.0
   - nextflow=22.04.0
-  - samtools=1.9
-  - openssl=1.0
