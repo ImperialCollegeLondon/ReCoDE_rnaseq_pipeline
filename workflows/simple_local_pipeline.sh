@@ -88,6 +88,7 @@ bin/star_index.sh \
   "${RES_DIR}/e_star_index" \
   "${DATA_DIR}/genome/GCF_000004515.6_Glycine_max_v4.0_genomic.fna.gz" \
   "${DATA_DIR}/genome/GCF_000004515.6_Glycine_max_v4.0_genomic.gtf.gz" \
+  9 \
   3 \
   "${NUM_CORES}"
 
