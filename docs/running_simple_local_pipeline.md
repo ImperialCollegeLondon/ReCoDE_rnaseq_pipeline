@@ -110,7 +110,9 @@ We have used the test data stored within the GitHub repository to try this pipel
 
 The file `data/files.txt` lists the sample identifiers for the data we are using in this exemplar. The script loads the names of these samples into a bash array using the following code:
 ```
-readarray -t SAMPLE_SRR < data/files.txt
+while IFS=\= read srr; do
+    SAMPLE_SRR+=($srr)
+done < data/files.txt
 ```
 
 Next, like we did for `DATA_DIR`, we define `RES_DIR`, which indicates the folder where the results will be saved to. 

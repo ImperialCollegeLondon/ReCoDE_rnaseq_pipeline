@@ -24,6 +24,7 @@ process STAR_INDEX {
         "indexed_genome" \
         "$genome" \
         "$annotation" \
+        "$params.index_bases" \
         "$params.sparse_d" \
         "$task.cpus"
 

@@ -26,7 +26,9 @@ NUM_CORES=2
 set -e
 
 # get names of samples
-readarray -t SAMPLE_SRR < data/files.txt
+while IFS=\= read srr; do
+    SAMPLE_SRR+=($srr)
+done < data/files.txt
 
 # get name of sample to run
 s="${SAMPLE_SRR[$PBS_ARRAY_INDEX - 1]}"

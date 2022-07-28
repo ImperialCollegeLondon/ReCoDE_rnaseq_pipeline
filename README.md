@@ -24,7 +24,6 @@ This project demonstrates the development of a pipeline for processing RNA-seq d
   - Unsupervised analysis (e.g. PCA)
   - Differential expression and enrichment using edgeR
 
-
 ## Prerequisites:
 
 - Familiarity with bash (A course such as "[The Linux Command Line for Scientific Computing](https://www.imperial.ac.uk/study/pg/graduate-school/students/doctoral/professional-development/research-computing-data-science/courses/linux-command-line-for-scientific-computing/)", hosted by the Imperial Research Computing & Data Science Team, would be provide a suitable background.)
@@ -44,7 +43,6 @@ Tools used achieve this as part of the exemplar include:
 - [Docker](https://www.docker.com/), an application for packaging dependencies into a virtual container. 
 - [Git/GitHub](https://github.com/ImperialCollegeLondon/ReCoDE_rnaseq_pipeline/), a version control system that integrates with nextflow to make pipelines shareable.
 - [Continous integration](https://github.com/ImperialCollegeLondon/ReCoDE_rnaseq_pipeline/actions), a practice of automatic code testing.
-
 
 ## Project Structure
 
@@ -88,8 +86,6 @@ In this exemplar, we set up three versions of the same pipeline, that process RN
 We created markdown documents, available in this directory, for each of these pipelines. These documents explain the pipelines and link to external resources in case you want to learn more. We suggest you go through the documentation in the order above, as each one builds upon the last.
 
 The downstream analysis uses the output of these pipelines to investigate the data. The dataset is a lot smaller at this point, so this stage of the analysis can be accomplished locally without the use of the cluster. The code for this stage is contained within the notebooks/ directory. The code is written in an Rmarkdown document, which has been run and stored as a markdown document within this directory. 
-
-
 
 ## Getting started
 

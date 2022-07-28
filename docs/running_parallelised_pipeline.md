@@ -34,10 +34,12 @@ So, the next step is to carry out the data processing steps for each sample. In 
 
 In the `workflows/simple_local_pipeline.sh` script, we looped through the sample IDs, and in each iteration we assigned the sample ID to the variable `s`. In `pbs/parallel_samples.pbs`, we take all the code from within these loops, but we instead define `s` at the top of the script using the environment variable `PBS_ARRAY_INDEX`. We will later set up this script to run as an array, such that `pbs/parallel_samples.pbs` is run six times, once for each sample; each of the six array jobs will have a different number for the variable `PBS_ARRAY_INDEX`, so that each script has a different value of `s`. To do this, we get the list of samples names like we did in the simple pipeline, as follows:
 ```
-readarray -t SAMPLE_SRR < data/files.txt
+while IFS=\= read srr; do
+    SAMPLE_SRR+=($srr)
+done < data/files.txt
 ```
 
-Then, wwe select the Nth value of the sample list (i.e. the Nth row of `data/files.txt`), in the following code:
+Then, we select the Nth value of the sample list (i.e. the Nth row of `data/files.txt`), in the following code:
 ```
 s="${SAMPLE_SRR[$PBS_ARRAY_INDEX - 1]}"
 ```
@@ -55,7 +57,9 @@ sp_jid="$(qsub pbs/setup_pipeline.pbs)"
 
 We next read the samples to be processed as a bash array, as below. We do this to calculate the number of samples to be processed, so that we know how large the array job needs to be. 
 ```
-readarray -t SAMPLE_SRR < data/files.txt
+while IFS=\= read srr; do
+    SAMPLE_SRR+=($srr)
+done < data/files.txt
 ```
 
 The most complex command is the submission of the array job:
