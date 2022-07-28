@@ -4,8 +4,8 @@ channels:
   - conda-forge
   - defaults
 dependencies:
+  - openssl=1.1.1q
   - samtools=1.9
-  - openssl=1.0
   - star=2.7.10a
   - fastqc=0.11.9
   - htseq=0.11.3
