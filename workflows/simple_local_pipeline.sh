@@ -22,7 +22,9 @@ set -e
 DATA_DIR="data/test"
 
 # get names of samples to run
-readarray -t SAMPLE_SRR < data/files.txt
+while IFS=\= read srr; do
+    SAMPLE_SRR+=($srr)
+done < data/files.txt
 
 # where to save the pipeline results
 RES_DIR="1_simple_local_pipeline_results"

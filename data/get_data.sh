@@ -4,18 +4,20 @@
 # For a smaller scale test, the repository comes with a subset of these data
 
 # a vector of the sequence read archive identifiers for the RNA-seq samples
-readarray -t SAMPLE_SRR < data/files.txt
+while IFS=\= read srr; do
+    SAMPLE_SRR+=($srr)
+done < data/files.txt
 
 # load fastq-dump command on the cluster
 # module load sra-toolkit/2.8.1
 
 # for each sample
-# for srr in ${SAMPLE_SRR[@]}; do
+for srr in ${SAMPLE_SRR[@]}; do
 
-#   # get the sample's file from the sequence read archive
-#   fastq-dump --gzip -O data/fastq/ "$srr"
+  # get the sample's file from the sequence read archive
+  fastq-dump --gzip -O data/fastq/ "$srr"
 
-# done
+done
 
 # get the genome and annotation files from NCBI
 # https://www.ncbi.nlm.nih.gov/assembly/GCF_000004515.6

@@ -8,7 +8,9 @@
 sp_jid="$(qsub pbs/setup_pipeline.pbs)"
 
 # now we have the data, get a list of the samples
-readarray -t SAMPLE_SRR < data/files.txt
+while IFS=\= read srr; do
+    SAMPLE_SRR+=($srr)
+done < data/files.txt
 
 # run the pipeline in parallel for each sample
 ps_jid="$(qsub -W depend=afterok:"${sp_jid}" -J 1-"${#SAMPLE_SRR[@]}" pbs/parallel_samples.pbs)"
