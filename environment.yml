@@ -6,7 +6,7 @@ channels:
 dependencies:
   - openssl=1.1.1q
   - samtools=1.9
-  - star=2.6.1d
+  - star=2.7.8a
   - fastqc=0.11.9
   - htseq=0.11.3
   - multiqc=1.12
