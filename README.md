@@ -24,13 +24,13 @@ This project demonstrates the development of a pipeline for processing RNA-seq d
   - Unsupervised analysis (e.g. PCA)
   - Differential expression and enrichment using edgeR
 
-## Prerequisites:
+## Prerequisites
 
 - Familiarity with bash (A course such as "[The Linux Command Line for Scientific Computing](https://www.imperial.ac.uk/study/pg/graduate-school/students/doctoral/professional-development/research-computing-data-science/courses/linux-command-line-for-scientific-computing/)", hosted by the Imperial Research Computing & Data Science Team, would be provide a suitable background.)
 - Familiarity with R programming language
 - Familiarity with computing clusters 
 
-## Learning Outcomes:
+## Learning Outcomes
 
 Upon completion of this tutorial, students will be able to:
 
