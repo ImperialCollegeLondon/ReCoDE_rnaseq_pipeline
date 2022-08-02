@@ -1,7 +1,9 @@
 # Running the simple pipeline
 
 ## Set Up
+
 Before we start attempting to process the RNA-seq data, we need to download this repository and install the relevant tools. You can get this repository by installing [Git](https://github.com/git-guides/install-git) and cloning this repository from the command line, using the following code:
+
 ```
 git clone https://github.com/ImperialCollegeLondon/ReCoDE_rnaseq_pipeline.git
 ```
@@ -15,7 +17,7 @@ conda activate recode_rnaseq
 
 You must be in the project directory so that conda has access to the `environment.yml` file.
 
-If this step takes too long to run, you could consider using [mamba](https://github.com/mamba-org/mamba) instead. 
+If this step takes too long to run, you could consider using [mamba](https://github.com/mamba-org/mamba) instead.
 
 ## The dataset
 
@@ -36,16 +38,17 @@ GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT
 ```
 
 Each sequence stored in the file is described by four lines:
- 1. A sequence identifier. This might include information on the type of sequencing being performed and the location of the RNA within the sequencer.
- 2. The base sequence of the RNA.
- 3. A `+` character.
- 4. A quality score. There is one character for each base in line `2.`. This represents the certainty of the sequencer that the base has been determined correctly. 
+
+1. A sequence identifier. This might include information on the type of sequencing being performed and the location of the RNA within the sequencer.
+2. The base sequence of the RNA.
+3. A `+` character.
+4. A quality score. There is one character for each base in line `2.`. This represents the certainty of the sequencer that the base has been determined correctly.
 
 But, you might have noticed there is another directory in `data/test/`. There are two files in `data/test/genome/`. These files were not generated in our soybean experiment. These files actually describe the soybean genome sequence and will be useful for understanding where the RNA sequences in our experiment originated from. The two files are as follows:
 
- 1. The `.fna` file (also known as a fasta) has similarities to the `.fastq` files. However, the genome sequence was determined in a previous experiment using genome sequencing, whereas the `.fastq` files using RNA sequencing to determine the RNA sequences. The `.fna` file contains the genome sequences, but in this case there are no quality scores. There are only two lines for each sequence; the first line gives a unique identifier while the second represents the nucleotide sequence. Each sequence in the `.fna` file represents one of the soybean chromosomes.
+1. The `.fna` file (also known as a fasta) has similarities to the `.fastq` files. However, the genome sequence was determined in a previous experiment using genome sequencing, whereas the `.fastq` files using RNA sequencing to determine the RNA sequences. The `.fna` file contains the genome sequences, but in this case there are no quality scores. There are only two lines for each sequence; the first line gives a unique identifier while the second represents the nucleotide sequence. Each sequence in the `.fna` file represents one of the soybean chromosomes.
 
- 2. The `.gtf` file (also known as gene transfer format) is a tab-delimited text file that contains the genome annotation. This file tells us where each gene is located within the soybean genome. This is useful, because we can use the `.fna` file to match the RNA sequences to the soybean genome, then we can lookup which gene this corresponds to using the `.gtf` annotation file.
+2. The `.gtf` file (also known as gene transfer format) is a tab-delimited text file that contains the genome annotation. This file tells us where each gene is located within the soybean genome. This is useful, because we can use the `.fna` file to match the RNA sequences to the soybean genome, then we can lookup which gene this corresponds to using the `.gtf` annotation file.
 
 ## Individual data processing steps
 
@@ -65,17 +68,17 @@ bin/fastqc.sh "a" "b" "c"
 
 The string `"a"` will be accessible within the script through the variable `$1`, `"b"` will be accessible through the variable `$2`, and so on. We can run the script multiple times, and each time we can change the arguments to the script so it runs for each of our input samples. `"c"` represents a directory that `fastqc` can save temporary files to.
 
-If we were to run FastQC for one of the soybean samples, the program would generate a convenient `.html` report for us that creates plots describing various quality control metrics. A screenshot of one of the reports is shown below. The summary on the left lists each of the quality control metrics and uses a traffic light system to indicate issues. Not all of the metrics are relevant for our analysis; if you want to understand each metric, there is documentation available online for the FastQC program that explains them. 
+If we were to run FastQC for one of the soybean samples, the program would generate a convenient `.html` report for us that creates plots describing various quality control metrics. A screenshot of one of the reports is shown below. The summary on the left lists each of the quality control metrics and uses a traffic light system to indicate issues. Not all of the metrics are relevant for our analysis; if you want to understand each metric, there is documentation available online for the FastQC program that explains them.
 
-The first metric shows a set of boxplots indicating the quality score. We mentioned these scores previously; they are available for each base in the `.fastq` file. FastQC converts the letter (phred) scores to numbers, where higher numbers indicate higher quality. You can see in the diagram that the quality is consistently high for each of the sequences in this `.fastq` file for the first ~50 bases. After this point, the quality drops off for many of the sequences. This might indicate that there are poor quality sequences that we should remove before performing further data processing steps. 
+The first metric shows a set of boxplots indicating the quality score. We mentioned these scores previously; they are available for each base in the `.fastq` file. FastQC converts the letter (phred) scores to numbers, where higher numbers indicate higher quality. You can see in the diagram that the quality is consistently high for each of the sequences in this `.fastq` file for the first ~50 bases. After this point, the quality drops off for many of the sequences. This might indicate that there are poor quality sequences that we should remove before performing further data processing steps.
 
-![A screenshot of a FastQC report for a soybean sample.](../assets/fastqc_output.png?raw=true "A FastQC report for one of the soybean samples.")
+![A screenshot of a FastQC report for a soybean sample.](assets/fastqc_output.png?raw=true "A FastQC report for one of the soybean samples.")
 
 ### Sequence trimming
 
 In the FastQC report, we saw that the quality of some of the RNA sequences drops off after ~50 bases. For this reason, we might consider removing the low quality sections of the sequences. Tools such as Trim Galore can do this by trimming the low quality sequences. The FastQC report also included a section on "Adapter Content". As part of the sequencing process, small sequences called adapters are attached to the RNA molecules. Sometimes, these sequences are sequenced by the sequence in addition to the RNA gathered from the sample. While in this case it didn't detect any, FastQC looks for common adapter sequences that are present in the RNA sequences. In this case, trimming tools can also remove the adapter sequences before we move on to further processing steps.
 
-The trimming step is performed by the `bin/trim.sh` script. Notice we pass the argument `--fastqc` to Trim Galore. This means that, after performing trimming, the program will run FastQC on the trimmed `.fastq` files so that we can verify that trimming has improved the quality distribution of the sequences. 
+The trimming step is performed by the `bin/trim.sh` script. Notice we pass the argument `--fastqc` to Trim Galore. This means that, after performing trimming, the program will run FastQC on the trimmed `.fastq` files so that we can verify that trimming has improved the quality distribution of the sequences.
 
 ### Alignment
 
@@ -93,7 +96,6 @@ The final stage of the data processing pipeline is to count how many RNA sequenc
 
 Having briefly discussed each stage of the pipeline, we can begin to put the stages together. We could run each stage by hand from the command line, but this would become time-consuming if we had many samples and it would be difficult to record the steps we took. Instead, we will put together a script (`workflows/simple_local_pipeline.sh`) and run our entire analysis using a single command. The following section describes each stage of the `workflows/simple_local_pipeline.sh` script, before showing you how to run it from the command line.
 
-
 ```
 conda activate recode_rnaseq
 ```
@@ -109,15 +111,16 @@ DATA_DIR="data/test"
 We have used the test data stored within the GitHub repository to try this pipeline out. If we wanted, we could download the full dataset using the `data/get_data.sh` script and change `DATA_DIR` to `"data/"`. Feel free to try this out after running the pipeline on the test dataset, but the data might be too large to run on your laptop or home computer! This is fine, because we will process the full dataset on the cluster in the next notebook.
 
 The file `data/files.txt` lists the sample identifiers for the data we are using in this exemplar. The script loads the names of these samples into a bash array using the following code:
+
 ```
 while IFS=\= read srr; do
     SAMPLE_SRR+=($srr)
 done < data/files.txt
 ```
 
-Next, like we did for `DATA_DIR`, we define `RES_DIR`, which indicates the folder where the results will be saved to. 
+Next, like we did for `DATA_DIR`, we define `RES_DIR`, which indicates the folder where the results will be saved to.
 
-Some of the pipeline steps, like STAR, can use multiple processers to speed up the analysis. To make use of this, we can set the variable `NUM_CORES` to a number greater than 1. 
+Some of the pipeline steps, like STAR, can use multiple processers to speed up the analysis. To make use of this, we can set the variable `NUM_CORES` to a number greater than 1.
 
 Next, we use a bash if statement, defined below. If the results folder at `RES_DIR` does not exist, this code creates a folder to store the results in.
 
@@ -129,7 +132,7 @@ else
 fi
 ```
 
-We then create a function called `create_folder`, defined below. We can call the function with a single argument, as so: `create_folder(my_folder)`. If the folder doesn't already exist, the function will create the folder. 
+We then create a function called `create_folder`, defined below. We can call the function with a single argument, as so: `create_folder(my_folder)`. If the folder doesn't already exist, the function will create the folder.
 
 ```
 create_folder () {
@@ -139,7 +142,7 @@ create_folder () {
 }
 ```
 
-Next, we use a bash loop to run the `bin/fastqc.sh` step for each of our samples. In the code below, we run the fastqc script for each of the sample names in the vector `SAMPLE_SRR`. So, for each iteration of the loop, we give a different input `.fastq` file to the fastqc script, and specify a different results directory, using the variable `s`. After this stage, there will be a report saved to the folder `1_simple_local_pipeline_results/a_fastqc/` for each of our samples. 
+Next, we use a bash loop to run the `bin/fastqc.sh` step for each of our samples. In the code below, we run the fastqc script for each of the sample names in the vector `SAMPLE_SRR`. So, for each iteration of the loop, we give a different input `.fastq` file to the fastqc script, and specify a different results directory, using the variable `s`. After this stage, there will be a report saved to the folder `1_simple_local_pipeline_results/a_fastqc/` for each of our samples.
 
 ```
 for s in "${SAMPLE_SRR[@]}"; do
@@ -154,23 +157,23 @@ done
 
 After creating these reports, we use a tool we haven't discussed yet: MultiQC. MultiQC can detect reports generated by common bioinformatics tools and cleverly combines them into a single report. So, we use the `bin/multiqc.sh` script to generate a single report from the six FastQC reports we generated in the previous stage. When we discussed the FastQC report we focussed on the sequence quality section. In the MultiQC report, there is a section that simultaneously visualises the average sequence quality for each sample in a single plot, which should look like the plot below. Again, we can see that the average quality score begins to drop after ~50bp.
 
-![A screenshot of a MultiQC report for the soybean samples before trimming.](../assets/multiqc_output_before_trimming.png?raw=true "MultiQC combines the FastQC reports for multiple samples.")
+![A screenshot of a MultiQC report for the soybean samples before trimming.](assets/multiqc_output_before_trimming.png?raw=true "MultiQC combines the FastQC reports for multiple samples.")
 
 The next step in the pipeline is to perform trimming. The code for this is similar to how we ran the FastQC tool. We loop through each of the samples, but this time we call `bin/trim.sh`. After we have performed trimming for each sample, we again run MultiQC to collect the reports after trimming. As you can see below, the average sequence quality is a lot better after trimming! Now we are more confident in the quality of our data, we can continue processing it.
 
-![A screenshot of a MultiQC report for the soybean samples after trimming.](../assets/multiqc_output_after_trimming.png?raw=true "MultiQC demonstrates that the sequence quality improves after trimming.")
+![A screenshot of a MultiQC report for the soybean samples after trimming.](assets/multiqc_output_after_trimming.png?raw=true "MultiQC demonstrates that the sequence quality improves after trimming.")
 
 In the next stage of the pipeline, we run the STAR indexing script. We don't do this in a loop, because we only need to generate the index once! After the index has been created, we move on to both align the sequences for each sample and perform the counting stage.
 
 The code below again loops through each of the sample names, storing the sample name in the variable `s` for each iteration. Within the loop we do the following:
 
- 1. Perform alignment using STAR for a single sample at a time.
+1. Perform alignment using STAR for a single sample at a time.
 
- 2. Remove the uncompressed `.fastq` file generated by the alignment script as it is no longer needed.
+2. Remove the uncompressed `.fastq` file generated by the alignment script as it is no longer needed.
 
- 3. Generate a `.counts` file using htseq-count for the sample.
+3. Generate a `.counts` file using htseq-count for the sample.
 
- 4. Check that the `.counts` file was successfully created. If not, something has gone wrong with the pipeline! We use a bash if statement to check the file is present in the results folder. If it is not, we use the command `err` to return an error.
+4. Check that the `.counts` file was successfully created. If not, something has gone wrong with the pipeline! We use a bash if statement to check the file is present in the results folder. If it is not, we use the command `err` to return an error.
 
 ```
 for s in "${SAMPLE_SRR[@]}"; do

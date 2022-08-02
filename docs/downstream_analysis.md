@@ -1,13 +1,13 @@
-Downstream analyses
-================
+# Downstream analyses
+
 Jack Gisby
 2022-06-14
 
--   [Loading the data](#loading-the-data)
--   [Unsupervised analysis and
-    visualisation](#unsupervised-analysis-and-visualisation)
-    -   [Principal components analysis](#principal-components-analysis)
--   [Differential expression](#differential-expression)
+- [Loading the data](#loading-the-data)
+- [Unsupervised analysis and
+  visualisation](#unsupervised-analysis-and-visualisation)
+  - [Principal components analysis](#principal-components-analysis)
+- [Differential expression](#differential-expression)
 
 This markdown document shows how we can perform basic downstream
 analysis on raw RNA-seq counts. These counts were produced by the data
@@ -22,7 +22,7 @@ raw counts into R on a standard home computer. After normalising the raw
 counts data, we will perform some basic analyses to investigate the
 transcriptome of the soybean samples.
 
-# Loading the data
+## Loading the data
 
 We load the names of the samples from `data/files.txt` into
 `sample_names` before extracting the raw counts for each sample. There
@@ -40,7 +40,7 @@ count file and merging them into the matrix `counts`. Finally, we can
 see that we have created a single matrix describing how many reads map
 to each gene for each sample.
 
-``` r
+```r
 # get the sample names
 sample_names <- read.csv("../data/files.txt", header = FALSE)[[1]]
 
@@ -49,14 +49,14 @@ counts <- data.frame(gene_id = fread("../3_nextflow_pipeline_results/g_count/SRR
 
 # for each sample
 for (s in sample_names) {
-    
+
     # get the counts from htseq
     sample_counts <- fread(paste0("../3_nextflow_pipeline_results/g_count/", s, ".counts"))
     colnames(sample_counts) <- c("gene_id", s)
-    
+
     # remove counts for reads that did not map to a gene
     sample_counts <- sample_counts[which(!grepl("__", sample_counts[[1]])) ,]
-    
+
     # merge with the main dataframe
     counts <- merge(counts, sample_counts, by = "gene_id")
 }
@@ -82,7 +82,7 @@ describing the condition for each of the samples. Three of the samples
 were grown at ambient ozone levels, while the other three were grown
 with elevated ozone.
 
-``` r
+```r
 sample_info <- data.frame(condition = c("ambient", "ambient", "elevated", "elevated", "elevated", "ambient"))
 rownames(sample_info) <- sample_names
 
@@ -106,15 +106,15 @@ For more information on this data container, see the
 `SummarizedExperiment`
 [vignette](https://bioconductor.org/packages/release/bioc/vignettes/SummarizedExperiment/inst/doc/SummarizedExperiment.html).
 
-``` r
+```r
 se <- SummarizedExperiment(counts, colData = sample_info)
 assayNames(se) <- "counts"
 
 print(se)
 ```
 
-    ## class: SummarizedExperiment 
-    ## dim: 54361 6 
+    ## class: SummarizedExperiment
+    ## dim: 54361 6
     ## metadata(0):
     ## assays(1): counts
     ## rownames(54361): 1-3-1A 1-3-1B ... ZTL1 ZTL2
@@ -124,7 +124,7 @@ print(se)
 
 From this container, we can access information on our samples.
 
-``` r
+```r
 colData(se)
 ```
 
@@ -140,7 +140,7 @@ colData(se)
 
 And we can extract the counts data as a matrix.
 
-``` r
+```r
 # view the first ten rows of the counts matrix
 assay(se)[1:10 ,]
 ```
@@ -157,21 +157,21 @@ assay(se)[1:10 ,]
     ## 4CL1           9627      5597     16109     28881     32941     10526
     ## 4CL2           1145       556      2686      4424      5729      1407
 
-# Unsupervised analysis and visualisation
+## Unsupervised analysis and visualisation
 
 Next, we will attempt to visualise the soybean transcriptomes.
 Currently, we are storing the raw counts with the `SummarizedExperiment`
 object. However, these are not necessarily appropriate for all
 downstream applications. For instance:
 
--   Some genes may not be expressed by many/any of the samples. We may
-    not want to include these in our downstream analyses.
+- Some genes may not be expressed by many/any of the samples. We may
+  not want to include these in our downstream analyses.
 
--   Analyses that compare different samples or genes may assume that
-    particular normalisation procedures have been applied.
+- Analyses that compare different samples or genes may assume that
+  particular normalisation procedures have been applied.
 
--   Some analyses are designed to work with counts after they have had a
-    transformation applied, such as a log transformation.
+- Some analyses are designed to work with counts after they have had a
+  transformation applied, such as a log transformation.
 
 For each of our analyses, we will consider whether our data has been
 appropriately processed. The package `edgeR` is popular for performing
@@ -185,7 +185,7 @@ the majority of our samples. We will also pass our experimental
 condition to the `group` argument, which makes sure there is sufficient
 counts in both the ambient and elevated sample groups.
 
-``` r
+```r
 # select genes to keep
 fbe_keep <- filterByExpr(se, group = se$condition, min.count = 500)
 
@@ -197,7 +197,7 @@ print(paste0("Number of genes before filtering: ", nrow(rowData(se))))
 
     ## [1] "Number of genes before filtering: 54361"
 
-``` r
+```r
 print(paste0("Number of genes after filtering: ", nrow(rowData(filtered_se))))
 ```
 
@@ -224,7 +224,7 @@ need to account for gene length.
 For more information on TMM normalisation, see the following
 [publication](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-3-r25).
 
-``` r
+```r
 # calculate normalisation factors, including TMM normalisation
 dge <- calcNormFactors(filtered_se)
 
@@ -246,7 +246,7 @@ mapped reads.
 The `cpm` function will also apply the normalisation factors calculated
 in the previous step log transform the data.
 
-``` r
+```r
 # add normalised logCPM data to the summarized experiment object
 assay(filtered_se, 2) <- cpm(dge, log = TRUE)
 ```
@@ -266,7 +266,7 @@ the variance of the input variables, and different genes have very
 different ranges of expression; so, standardisation is recommended to
 keep different genes on comparable scales.
 
-``` r
+```r
 # prcomp calculates PCA using singular value decomposition
 cpm_pca <- prcomp(t(assay(filtered_se, 2)), center = TRUE, scale. = TRUE)
 
@@ -293,7 +293,7 @@ experimental conditions, indicating clear differences between the
 groups. PCA is known as “unsupervised”, because it identifies patterns
 in the data without knowledge of labels of interest.
 
-``` r
+```r
 pca_df <- data.frame(condition = filtered_se$condition, cpm_pca$x)
 
 # use the ggplot package to plot the PCA
@@ -303,7 +303,7 @@ ggplot(pca_df, aes(PC1, PC2, col = condition)) +
 
 ![](downstream_analysis_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
-# Differential expression
+## Differential expression
 
 We have performed an unsupervised analysis, PCA, to visualise our data.
 This demonstrated clear differences between or groups of interest,
@@ -331,14 +331,14 @@ implemented in the `exactTest` function. The [edgeR Users
 Guide](https://bioconductor.org/packages/release/bioc/html/edgeR.html)
 notes that this test has strong parallels with the Fisher’s exact test.
 
-``` r
+```r
 # estimate dispersion parameter
 dge <- estimateDisp(dge)
 ```
 
     ## Using classic mode.
 
-``` r
+```r
 # fit the models
 et <- exactTest(dge)
 
@@ -349,7 +349,7 @@ res <- topTags(et, n=60000)
 print(head(res))
 ```
 
-    ## Comparison of groups:  elevated-ambient 
+    ## Comparison of groups:  elevated-ambient
     ##                 logFC   logCPM        PValue           FDR
     ## LOC100790507 7.292131 5.709596 1.446266e-222 1.551409e-218
     ## 100801599    6.053555 4.926274 1.819215e-156 9.757361e-153
@@ -362,16 +362,16 @@ To visualise the results, we will create a volcano plot, which makes it
 easier to identify genes with particularly high fold changes and small
 P-values.
 
-``` r
+```r
 # use the EnhancedVolcano package to visualise the results
 EnhancedVolcano(
-    res$table, 
-    lab = rownames(res$table), 
-    x = "logFC", 
-    y = "PValue", 
-    pCutoffCol = "FDR", 
+    res$table,
+    lab = rownames(res$table),
+    x = "logFC",
+    y = "PValue",
+    pCutoffCol = "FDR",
     pCutoff = 0.05
 )
 ```
 
-![](downstream_analysis_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![alt](downstream_analysis_files/figure-gfm/unnamed-chunk-7-1.png)
