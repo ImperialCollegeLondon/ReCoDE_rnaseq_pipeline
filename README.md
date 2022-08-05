@@ -125,5 +125,3 @@ In this exemplar, we set up three versions of the same pipeline, that process RN
 We created markdown documents, available in this directory, for each of these pipelines. These documents explain the pipelines and link to external resources in case you want to learn more. We suggest you go through the documentation in the order above, as each one builds upon the last.
 
 The downstream analysis uses the output of these pipelines to investigate the data. The dataset is a lot smaller at this point, so this stage of the analysis can be accomplished locally without the use of the cluster. The code for this stage is contained within the notebooks/ directory. The code is written in an Rmarkdown document, which has been run and stored as a markdown document within this directory.
-
-## License
