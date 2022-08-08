@@ -37,6 +37,8 @@ theme:
     - navigation.top
     - toc.follow
     - content.code.annotate
+extra:
+  homepage: https://imperialcollegelondon.github.io/ReCoDE-home/
 
 nav:
   - "index.md"
