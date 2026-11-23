@@ -48,6 +48,7 @@ jobs:
     name: Run the simple pipeline script
 
     strategy:
+      fail-fast: false
       matrix:
         os: [ ubuntu-latest, macos-latest ]
 
